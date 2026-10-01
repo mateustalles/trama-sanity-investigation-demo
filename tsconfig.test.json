@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "jsx": "preserve",
+    "paths": {
+      "@trama/*": ["./packages/*/src/index.ts"]
+    }
+  },
+  "include": ["__test__/**/*.ts", "apps/web/next-env.d.ts"]
+}

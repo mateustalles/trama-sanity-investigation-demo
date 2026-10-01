@@ -50,6 +50,10 @@ screen.
 
 ## Validation
 
+Tests are centralized in [`__test__/`](__test__/README.md), with subdirectories
+mirroring the source modules. `pnpm test` runs both the TypeScript suite and the
+script unit tests.
+
 ```powershell
 pnpm test
 pnpm typecheck

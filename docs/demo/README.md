@@ -115,6 +115,9 @@ temporary tunnel are not equivalent to a production-hosted application.
 
 ## Validate and understand the limits
 
+Tests live in `__test__/`, organized by source module. The main test command
+runs both Vitest and the Node script unit suites.
+
 ```powershell
 pnpm test
 pnpm typecheck
