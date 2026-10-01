@@ -2,8 +2,18 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { requiresHostedPageSession } from "./lib/supabase/route-access";
 import { demoJudgeExpired, isDemoJudge, judgeRouteAllowed, judgeDemoPath } from "./lib/supabase/demo-judge";
+import { demoRouteAllowed } from "./lib/demo-access";
 
 export async function proxy(request: NextRequest) {
+  if (!demoRouteAllowed(request.nextUrl.pathname, request.method)) {
+    if (request.nextUrl.pathname.startsWith("/api/") || !["GET", "HEAD"].includes(request.method)) {
+      return NextResponse.json({error:"This demo only supports read-only investigations."}, {status:403});
+    }
+    const target = request.nextUrl.clone();
+    target.pathname = "/poc/sanity/investigate";
+    target.search = "";
+    return NextResponse.redirect(target);
+  }
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   if (!url || !key) return NextResponse.next({ request });

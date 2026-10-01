@@ -8,14 +8,14 @@ export async function signIn(form: FormData) {
   const email = String(form.get("email") ?? "").trim();
   const password = String(form.get("password") ?? "");
   const { data, error } = await (await createSupabaseServerClient()).auth.signInWithPassword({ email, password });
-  if (error) redirect(`/login?error=${encodeURIComponent("E-mail ou senha inválidos.")}`);
+  if (error) redirect(`/login?error=${encodeURIComponent("Invalid email or password.")}`);
   redirect(accountHome(data.user));
 }
 
 export async function requestPasswordReset(form: FormData) {
   const email = String(form.get("email") ?? "").trim();
   // Keep the response generic so this route does not disclose beta membership.
-  if (!email) redirect(`/login?error=${encodeURIComponent("Informe seu e-mail para receber o link de redefinição.")}`);
+  if (!email) redirect(`/login?error=${encodeURIComponent("Enter your email to request a reset link.")}`);
   const requestHeaders = await headers();
   const requestOrigin = requestHeaders.get("origin");
   const forwardedHost = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host");
@@ -30,7 +30,7 @@ export async function requestPasswordReset(form: FormData) {
   await (await createSupabaseServerClient()).auth.resetPasswordForEmail(email, {
     redirectTo: `${baseUrl}/auth/callback`
   });
-  redirect(`/login?error=${encodeURIComponent("Se houver uma conta para este e-mail, enviamos um link de redefinição.")}`);
+  redirect(`/login?error=${encodeURIComponent("If an account exists for this email, a reset link has been sent.")}`);
 }
 
 export async function signOut() {

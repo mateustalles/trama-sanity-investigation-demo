@@ -6,8 +6,8 @@ export default async function DefinePasswordPage({ searchParams }: { searchParam
   if (!await currentHostedUser()) redirect("/login");
   const { error } = await searchParams;
   return <main className="loginPage"><section className="loginPaper">
-    <p className="kicker">Primeiro acesso</p><h1>Defina sua senha</h1><p>Use pelo menos 10 caracteres. A senha será enviada diretamente ao Supabase e nunca será armazenada pelo Trama.</p>
+    <p className="kicker">Account setup</p><h1>Set your password</h1><p>Use at least 10 characters. Supabase Auth manages your password; Trama does not store the plaintext password.</p>
     {error && <div className="loginError" role="alert">{error}</div>}
-    <form action={definePassword} className="paperForm"><label>Nova senha<input name="password" type="password" minLength={10} autoComplete="new-password" required /></label><label>Repita a senha<input name="confirmation" type="password" minLength={10} autoComplete="new-password" required /></label><button type="submit">Salvar e entrar</button></form>
+    <form action={definePassword} className="paperForm"><label>New password<input name="password" type="password" minLength={10} autoComplete="new-password" required /></label><label>Confirm password<input name="confirmation" type="password" minLength={10} autoComplete="new-password" required /></label><button type="submit">Save and continue</button></form>
   </section></main>;
 }

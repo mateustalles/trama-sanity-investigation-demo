@@ -18,13 +18,13 @@ This is deliberately **not** a root-cause button. The agent does not approve a h
 
 **Live demo:** [ADD PUBLIC, READ-ONLY DEMO URL]
 
-The demo is in English and presents a fictional case, suggested lines of inquiry, a free-form question box, the agent's answer and limitations, expandable original-source bodies, and the Context MCP/GROQ retrieval trace. A useful first question is: “What changed in checkout shortly before the September 18 payment failures began?” Then ask what the Provider A latency observation recorded, or whether the postal-code and fraud records support alternative explanations. The initial brief does not state the cause.
+The demo presents a fictional case, suggested lines of inquiry, a free-form question box, the agent's answer and limitations, expandable original-source bodies, and the Context MCP/GROQ retrieval trace. A useful first question is: “What changed in checkout shortly before the September 18 payment failures began?” Then ask what the Provider A latency observation recorded, or whether the postal-code and fraud records support alternative explanations. The initial brief does not state the cause.
 
 The current local route is `/poc/sanity/investigate`; `127.0.0.1` is only a development address, **not** a judge-accessible demo. Judges will receive a dedicated, limited test account through the normal invitation flow. [ADD THE DEMO URL AND THE SAFE ACCOUNT-DELIVERY INSTRUCTIONS; DO NOT PUT A PASSWORD OR API KEY IN THIS POST.] The demo makes server-side Sanity and model API calls, so access remains authenticated and read-only.
 
 ## Code
 
-**Repository:** [Trama × Sanity investigation demo](https://github.com/mateustalles/trama-sanity-investigation-demo). The public source snapshot includes an English setup and walkthrough guide; it excludes the private product repository's history and credentials.
+**Repository:** [Trama × Sanity investigation demo](https://github.com/mateustalles/trama-sanity-investigation-demo). The public source snapshot includes a setup and walkthrough guide; it excludes the private product repository's history and credentials.
 
 The live agent flow is in `scripts/sanity-demo-agent.mjs`; the scoped query and source-verification helpers are in `scripts/sanity-content-lake-evidence.mjs`; the API and UI are in `apps/web/app/api/poc/sanity/investigate/route.ts` and `apps/web/app/poc/sanity/investigate/`. The benchmark methods and limitations are documented under `docs/experiments/`.
 

@@ -14,7 +14,7 @@ export async function GET(request: Request) {
   const tokenHash = url.searchParams.get('token_hash')
   const recovery = tokenHash && url.searchParams.get('type') === 'recovery'
   if (!code && !recovery) {
-    return NextResponse.redirect(new URL('/login?error=Link%20de%20recupera%C3%A7%C3%A3o%20inv%C3%A1lido.', url))
+    return NextResponse.redirect(new URL('/login?error=Invalid%20recovery%20link.', url))
   }
 
   const client = await createSupabaseServerClient()
@@ -22,7 +22,7 @@ export async function GET(request: Request) {
     ? await client.auth.verifyOtp({token_hash:tokenHash!,type:'recovery'})
     : await client.auth.exchangeCodeForSession(code!)
   if (error) {
-    return NextResponse.redirect(new URL('/login?error=Este%20link%20expirou%20ou%20j%C3%A1%20foi%20utilizado.', url))
+    return NextResponse.redirect(new URL('/login?error=This%20link%20has%20expired%20or%20was%20already%20used.', url))
   }
   return NextResponse.redirect(new URL('/set-password', url))
 }

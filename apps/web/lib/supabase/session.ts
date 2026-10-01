@@ -10,6 +10,7 @@ export async function currentHostedUser() {
 }
 
 export async function requireHostedUser(options: {allowDemoJudge?: boolean} = {}) {
+  if (!options.allowDemoJudge) redirect(judgeDemoPath);
   if (!hostedAuthConfigured()) return null;
   const user = await currentHostedUser();
   if (!user) redirect("/login");

@@ -1,5 +1,11 @@
 # Sanity Context live evidence-agent demo
 
+Publication update (1 October 2026): this distribution opens the investigation
+at its homepage and provides a complete authentication flow in the same
+language. It does not expose the general product chat or operational routes.
+The walkthrough below records the earlier prototype; its Portuguese-first
+product shell is not the current public MVP.
+
 Status: experimental, read-only, synthetic pilot. The UI is
 `/poc/sanity/investigate`; its POST endpoint is
 `/api/poc/sanity/investigate`. Neither changes the active Trama chat, current

@@ -6,9 +6,9 @@ import { accountHome } from "../../lib/supabase/demo-judge";
 export async function definePassword(form: FormData) {
   const password = String(form.get("password") ?? "");
   const confirmation = String(form.get("confirmation") ?? "");
-  if (password.length < 10) redirect("/set-password?error=A%20senha%20precisa%20ter%20pelo%20menos%2010%20caracteres.");
-  if (password !== confirmation) redirect("/set-password?error=As%20senhas%20n%C3%A3o%20coincidem.");
+  if (password.length < 10) redirect("/set-password?error=Use%20at%20least%2010%20characters.");
+  if (password !== confirmation) redirect("/set-password?error=Passwords%20do%20not%20match.");
   const { data, error } = await (await createSupabaseServerClient()).auth.updateUser({ password });
-  if (error) redirect("/set-password?error=N%C3%A3o%20foi%20poss%C3%ADvel%20salvar%20a%20senha.");
+  if (error) redirect("/set-password?error=Your%20password%20could%20not%20be%20saved.");
   redirect(accountHome(data.user));
 }

@@ -3,6 +3,7 @@
 import {useEffect,useRef,useState,type FormEvent} from 'react'
 import type {DemoResult} from '../../../../../../scripts/sanity-demo-agent.mjs'
 import styles from './investigation-demo.module.css'
+import {signOut} from '../../../login/actions'
 
 const suggestedQuestions = [
   {id:'timeline',label:'Establish the timeline',description:'Start with the event itself, before looking for a cause.',question:'What happened to checkout payments between 10:00 and 10:15 UTC on September 18, 2026?'},
@@ -19,7 +20,7 @@ const advancedQuestions = [
 function shortId(value: string) { return value.length > 28 ? `${value.slice(0,27)}…` : value }
 function seconds(value: number) { return `${(value / 1000).toFixed(1)} s` }
 
-export function InvestigationDemo() {
+export function InvestigationDemo({signedIn=false}: {signedIn?: boolean}) {
   const [question,setQuestion] = useState('')
   const [result,setResult] = useState<DemoResult | null>(null)
   const [pending,setPending] = useState(false)
@@ -56,6 +57,7 @@ export function InvestigationDemo() {
       <nav className={styles.nav} aria-label="Demo navigation">
         <a href="/poc/sanity/investigate">Trama × Sanity Context</a><span>·</span><span>Evidence investigation demo</span>
         <span className={styles.navStatus}>Experimental · read-only</span>
+        {signedIn && <form action={signOut}><button type="submit">Sign out</button></form>}
       </nav>
 
       <header className={styles.hero}>

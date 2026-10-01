@@ -10,11 +10,11 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   if (user && !(isDemoJudge(user) && demoJudgeExpired(user))) redirect(accountHome(user));
   const { error } = await searchParams;
   return <main className="loginPage"><section className="loginPaper">
-    <p className="kicker">Acesso privado</p><h1>Entre no Trama</h1>
-    <p>Seu contexto, suas conversas e suas decisões ficam vinculados à sua conta.</p>
+    <p className="kicker">Private demo access</p><h1>Sign in to Trama</h1>
+    <p>Investigate the checkout incident and inspect the evidence behind each answer.</p>
     {error && <div className="loginError" role="alert">{error}</div>}
-    <form action={signIn} className="paperForm"><label>E-mail<input name="email" type="email" autoComplete="email" required /></label><label>Senha<input name="password" type="password" autoComplete="current-password" required /></label><button type="submit">Entrar</button></form>
-    <details className="closeOpenLoop"><summary>Esqueci minha senha</summary><form action={requestPasswordReset} className="paperForm"><label>E-mail<input name="email" type="email" autoComplete="email" required /></label><button type="submit">Enviar link de redefinição</button></form></details>
-    <small>O beta é fechado e funciona somente por convite.</small>
+    <form action={signIn} className="paperForm"><label>Email<input name="email" type="email" autoComplete="email" required /></label><label>Password<input name="password" type="password" autoComplete="current-password" required /></label><button type="submit">Sign in</button></form>
+    <details className="closeOpenLoop"><summary>Forgot your password?</summary><form action={requestPasswordReset} className="paperForm"><label>Email<input name="email" type="email" autoComplete="email" required /></label><button type="submit">Send reset link</button></form></details>
+    <small>Demo access is by invitation. Account limits apply.</small>
   </section></main>;
 }

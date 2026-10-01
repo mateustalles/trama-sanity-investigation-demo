@@ -1,6 +1,6 @@
 # The Checkout Investigation — Trama × Sanity
 
-An English-language, read-only investigation agent demo. Explore a fictional
+A read-only investigation agent demo. Explore a fictional
 checkout incident, ask your own questions, and inspect the original records
 behind the answer. The current research corpus contains 145 synthetic records;
 this is a recorded pilot count, not a live count displayed by the application.
@@ -72,7 +72,8 @@ expect external corpus files: do not run them blindly against another project.
 node scripts/start-sanity-demo.mjs .env.local 3001
 ```
 
-Open [the investigation page](http://127.0.0.1:3001/poc/sanity/investigate).
+Open [the app](http://127.0.0.1:3001/). The homepage opens the investigation
+directly; `/poc/sanity/investigate` also remains available.
 The launcher binds to loopback only. It reads credentials from the supplied
 file without copying them into the repository. Local development allows this
 demo without sign-in; it is **not** suitable for public exposure.
@@ -131,3 +132,11 @@ Live smoke testing consumes provider quota. Historic benchmark run artifacts
 and local logs are intentionally excluded from Git. Research notes describe
 selected synthetic comparisons, not guaranteed performance on arbitrary data.
 The player-led Delta game remains a separate concept, not a feature of this demo.
+
+## MVP scope
+
+The published app exposes the investigation and its authentication flow.
+The personal organizer, product chat, settings, and operational write APIs are
+not exposed. Legacy product components remain in the source tree, but the route
+boundary redirects other pages to the investigation and rejects unrelated API
+calls. Operational product services are disabled in this distribution.

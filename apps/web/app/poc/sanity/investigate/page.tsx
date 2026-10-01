@@ -9,6 +9,6 @@ export const metadata: Metadata = {
 }
 
 export default async function SanityInvestigationDemoPage() {
-  await requireHostedUser({allowDemoJudge:true})
-  return <InvestigationDemo />
+  const user = await requireHostedUser({allowDemoJudge:true})
+  return <InvestigationDemo signedIn={Boolean(user)} />
 }
