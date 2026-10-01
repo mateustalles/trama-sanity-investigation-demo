@@ -1,0 +1,36 @@
+{
+  "name": "trama",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.7.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @trama/web dev",
+    "remote": "powershell.exe -ExecutionPolicy Bypass -File scripts/start-remote.ps1",
+    "hosted:import": "node scripts/import-sqlite-to-supabase.mjs",
+    "hosted:verify": "tsx scripts/verify-hosted-service.ts",
+    "local:agent": "pnpm --filter @trama/local-agent start",
+    "local:chat": "pnpm --filter @trama/local-agent start -- --chat",
+    "local:eval": "pnpm --filter @trama/local-agent eval --",
+    "local:eval:export": "tsx scripts/export-eval-corpus.ts",
+    "benchmark:sanity-context": "node scripts/run-sanity-context-benchmark-v3.mjs",
+    "benchmark:sanity-context:v4": "node scripts/run-sanity-context-benchmark-v4.mjs",
+    "local:model": "node scripts/create-local-model.mjs",
+    "voice:setup": "powershell.exe -ExecutionPolicy Bypass -File scripts/setup-whisper.ps1",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@next/swc-wasm-nodejs": "16.3.0",
+    "@supabase/supabase-js": "2.112.4",
+    "@types/node": "latest",
+    "postgres": "3.4.0",
+    "tsx": "4.23.1",
+    "typescript": "latest",
+    "vitest": "latest"
+  }
+}

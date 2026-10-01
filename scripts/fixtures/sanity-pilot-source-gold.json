@@ -1,0 +1,10 @@
+{
+  "R01": ["00-scenario.md"],
+  "R02": ["01-deployment-record.md"],
+  "R03": ["02-provider-latency-log.md"],
+  "R04": ["02-provider-latency-log.md"],
+  "R05": ["03-postal-code-sample.md"],
+  "R06": ["04-fraud-score-report.md"],
+  "R07": ["05-provider-status-update.md"],
+  "R08": ["16-monitoring-delta-old.md"]
+}

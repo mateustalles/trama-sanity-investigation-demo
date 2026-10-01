@@ -1,0 +1,48 @@
+.page {
+  min-height: 100vh;
+  padding: 48px 20px 80px;
+  background: #21110e;
+  color: #231d1a;
+}
+
+.surface {
+  width: min(100%, 820px);
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 48px);
+  border: 1px solid #e4d7ca;
+  border-radius: 20px;
+  background: #fffdf9;
+  box-shadow: 0 22px 60px rgb(0 0 0 / 30%);
+}
+
+.header { max-width: 650px; margin-bottom: 42px; }
+.header h1, .sectionHeading h2, .card h3 { margin: 0; color: #221814; letter-spacing: -0.025em; }
+.header h1 { font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.05; }
+.header > p:not(.eyebrow) { margin: 16px 0 0; color: #645a53; line-height: 1.6; }
+.header a { color: #7b3f20; font-weight: 750; }
+.eyebrow, .cardLabel { margin: 0 0 8px; color: #7b3f20; font-size: .75rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+
+.sectionHeading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.sectionHeading h2 { font-size: 1.35rem; }
+.count { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 50%; background: #f3e6dc; color: #74391d; font-weight: 800; }
+.card { padding: 24px; border: 1px solid #e7d8ca; border-radius: 14px; background: #fff; box-shadow: 0 4px 14px rgb(63 37 23 / 8%); }
+.card h3 { font-size: 1.2rem; line-height: 1.35; }
+.meta { margin: 12px 0 20px; color: #62564f; font-size: .92rem; }
+.meta span { padding: 0 6px; color: #9a816f; }
+.card button { border: 0; border-radius: 8px; padding: 11px 16px; background: #7b3f20; color: #fff; font: inherit; font-weight: 750; cursor: pointer; }
+.card button:hover:not(:disabled) { background: #5d2f18; }
+.card button:disabled { cursor: wait; opacity: .68; }
+.card button + p { margin: 12px 0 0; color: #315b3d; font-weight: 650; }
+.empty { margin: 0; padding: 20px; border: 1px dashed #d8c7b8; border-radius: 12px; background: #faf5ef; color: #60554e; line-height: 1.5; }
+.empty p { margin: 6px 0 0; }
+.history { margin-top: 42px; padding-top: 30px; border-top: 1px solid #eaded2; }
+.historyItem { display: flex; gap: 12px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid #eee4da; }
+.historyItem > span { display: grid; flex: 0 0 auto; width: 24px; height: 24px; place-items: center; border-radius: 50%; background: #dcefe0; color: #235b32; font-weight: 850; }
+.historyItem strong { color: #2b211d; }
+.historyItem p { margin: 4px 0 0; color: #756960; font-size: .88rem; }
+
+@media (max-width: 560px) {
+  .page { padding: 20px 12px 56px; }
+  .surface { padding: 24px 20px; border-radius: 14px; }
+  .card { padding: 20px; }
+}

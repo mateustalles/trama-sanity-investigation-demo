@@ -1,0 +1,29 @@
+{
+  "name": "@trama/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "node scripts/next.mjs dev",
+    "build": "node scripts/next.mjs build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.5",
+    "@supabase/supabase-js": "^2.112.4",
+    "@trama/application": "workspace:*",
+    "@trama/core": "workspace:*",
+    "@trama/database": "workspace:*",
+    "@trama/local-agent": "workspace:*",
+    "@trama/mcp": "workspace:*",
+    "@trama/schemas": "workspace:*",
+    "@trama/testing": "workspace:*",
+    "next": "latest",
+    "next-sanity": "^13.3.4",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest"
+  }
+}

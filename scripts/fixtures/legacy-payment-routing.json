@@ -1,0 +1,19 @@
+{
+  "knowledgeBaseId": "kbDylxoCV0YH",
+  "establish_scope": ["incident_overview"],
+  "reconstruct_sequence": ["incident_overview", "deployment", "hypotheses/provider_latency"],
+  "examine_explanations": ["hypotheses/provider_latency", "hypotheses/postal_code_validation", "hypotheses/fraud_rules"],
+  "seek_counterevidence": ["hypotheses/provider_latency", "hypotheses/postal_code_validation", "hypotheses/fraud_rules"],
+  "separate_related_matters": ["related_incidents"],
+  "check_evidence_boundaries": ["audit_and_compliance"],
+  "prepare_decision_brief": ["incident_overview", "deployment", "hypotheses/provider_latency", "hypotheses/postal_code_validation", "hypotheses/fraud_rules"],
+  "pathHints": {
+    "incident_overview": ["investigated event", "incident", "event interval"],
+    "deployment": ["deployment", "release", "configuration changed", "checkout configuration", "timeout"],
+    "hypotheses/provider_latency": ["provider", "latency", "retry", "retries", "vendor status"],
+    "hypotheses/postal_code_validation": ["postal", "address", "validation"],
+    "hypotheses/fraud_rules": ["fraud", "rule publication", "fraud configuration"],
+    "related_incidents": ["other case", "another case", "related incident", "catalog", "cache", "migration", "maintenance"],
+    "audit_and_compliance": ["audit scope", "source limit", "compliance"]
+  }
+}
