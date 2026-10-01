@@ -1,67 +1,51 @@
-# Trama × Sanity — The Checkout Investigation
+# Trama × Sanity
 
-Find the evidence. Test the story.
+## Find the evidence. Test the story.
 
-A read-only investigation agent for a fictional checkout incident. Ask your own
-questions, retrieve original records through Sanity Context MCP, and inspect
-what the evidence supports, what is inferred, and what remains uncertain.
+A release goes live. Checkout payments start failing. Was the deployment
+responsible, was a provider slow, or is something else hiding in the records?
 
-## Get started
+**You are the investigator.** Ask your own questions, follow the clues, and
+inspect the original documents before accepting an explanation.
 
-**[Setup and walkthrough](docs/demo/README.md)**
+Trama helps connect the evidence. Sanity helps find it in a noisy archive.
+The agent explains what the records support—and what is still unknown.
 
-Requirements: Node.js 24+, pnpm, and authorized server-side Sanity Context and
-OpenAI credentials. Cloning this repository does not grant access to the private
-pilot dataset.
+## What can I do?
 
-```powershell
-pnpm install
-Copy-Item .env.example .env.local
-# Configure the server credentials privately.
-node scripts/start-sanity-demo.mjs .env.local 3001
-```
+- Start with a short case brief.
+- Ask a question or choose a suggested starting point.
+- Read the answer alongside its original sources.
+- Follow up, challenge an explanation, and look for missing evidence.
 
-Open `http://127.0.0.1:3001/`. The app opens the investigation directly.
-Hosted deployments require sign-in; local development is loopback-only.
+Try: *“What changed shortly before the payment failures began?”*
+Then ask: *“What evidence challenges that explanation?”*
 
-## Explore the case
+The incident and archive are fictional. This demo is read-only: it cannot
+change your personal data or apply an investigation decision.
 
-- What happened, and when?
-- What changed shortly before the failures?
-- What do the provider measurements tell us?
-- Which records support or challenge competing explanations?
+## Try it
 
-The case brief, suggested prompts, original source viewer, retrieval trace,
-and qualified answers are part of the MVP. It does not expose the personal
-organizer, operational chat, or Delta write endpoints.
+[Get the demo running](docs/demo/README.md) ·
+[Read the project story](docs/experiments/sanity-challenge-writeup.md)
 
-## Architecture and research
+This repository contains the app, not a publicly hosted service. Running it
+requires authorized server-side credentials and access to the pilot archive.
+The setup guide explains the requirements; cloning alone does not grant access.
 
-- [Demo guide and access restrictions](docs/demo/README.md)
-- [Challenge write-up draft](docs/experiments/sanity-challenge-writeup.md)
-- [Retrieval architecture and prior walkthrough](docs/experiments/sanity-live-agent-demo.md)
+## How do we know it works?
 
-This distribution includes Trama's shared packages and historical research code.
-Some legacy components remain in the source tree for reference, but their
-product routes are unavailable in this MVP. No private repository history,
-credentials, personal databases, local benchmark logs, or judge setup links
-are included. Historical notes describe earlier prototypes, not every current
-screen.
+We test the retrieval and answer-handling safeguards with fixed examples,
+evaluate real model behavior separately, and manually check whether the
+sources support important claims. These are different checks: a passing unit
+test is not proof that every AI answer is correct.
 
-## Validation
+[How we test the agent](docs/testing.md) · [Browse the tests](__test__/README.md)
 
-Tests are centralized in [`__test__/`](__test__/README.md), with subdirectories
-mirroring the source modules. `pnpm test` runs both the TypeScript suite and the
-script unit tests.
+## For builders
 
-```powershell
-pnpm test
-pnpm typecheck
-$env:NEXT_PUBLIC_SANITY_PROJECT_ID="<your public project ID>"
-$env:NEXT_PUBLIC_SANITY_DATASET="<your dataset>"
-pnpm build
-```
+[Setup and walkthrough](docs/demo/README.md) ·
+[Retrieval architecture](docs/experiments/sanity-live-agent-demo.md)
 
-Questions are sent to Sanity and OpenAI and may incur provider charges. Do not
-submit personal or confidential data. Source integrity checks are not proof
-that every claim is semantically supported; read the originals.
+Please do not submit personal or confidential information. Questions are sent
+to Sanity and OpenAI, and live investigations may incur provider charges.

@@ -36,7 +36,7 @@ function fakeAdapters({tamper=false,badCitation=false} = {}) {
   return {adapters,queries,prompts}
 }
 
-describe('live Sanity pilot demo agent',() => {
+describe('offline investigation pipeline — fixed model and retrieval adapters',() => {
   it('validates the input and Context GROQ envelope',() => {
     assert.equal(validateDemoQuestion(`  ${question}  `),question)
     assert.throws(() => validateDemoQuestion('too short'))

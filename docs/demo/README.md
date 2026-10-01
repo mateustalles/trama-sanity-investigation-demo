@@ -117,6 +117,8 @@ temporary tunnel are not equivalent to a production-hosted application.
 
 Tests live in `__test__/`, organized by source module. The main test command
 runs both Vitest and the Node script unit suites.
+See [how we test the agent](../testing.md) for mock coverage, live benchmarks,
+and manual audit. `pnpm test:ai` runs the offline AI harness without provider keys.
 
 ```powershell
 pnpm test

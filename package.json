@@ -23,6 +23,7 @@
     "typecheck": "pnpm -r typecheck && tsc -p tsconfig.test.json",
     "test": "vitest run && node scripts/run-script-tests.mjs",
     "test:scripts": "node scripts/run-script-tests.mjs",
+    "test:ai": "node scripts/run-script-tests.mjs",
     "test:watch": "vitest"
   },
   "devDependencies": {
