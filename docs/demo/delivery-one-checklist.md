@@ -4,9 +4,10 @@ The first submission is the read-only investigation agent and its Path One
 post. The player-led State and Delta game is a separate second submission.
 Do not delay the agent submission to add game mechanics.
 
-Lead with a short recorded walkthrough; offer the restricted hosted app as
-an additional exploration path once it has been verified. Hosting does not
-replace the explanation of the case, the retrieval trace or the limitations.
+The restricted hosted app is verified and supplies the Path One demo link.
+A short recorded walkthrough is recommended, not a reason to delay this post:
+the template accepts a deployed URL or video. Explain the case, retrieval
+trace and limitations in either presentation.
 
 ## Required publication assets
 
@@ -14,9 +15,9 @@ replace the explanation of the case, the retrieval trace or the limitations.
 - [x] Include a verified live demo link **or** an embedded recorded walkthrough,
   as allowed by the Path One template. A localhost address is not a public demo.
   Live URL: https://trama.beautyqueenz.com/poc/sanity/investigate.
-- [ ] Link the public GitHub source matching the demonstrated version.
+- [x] Link the public GitHub source matching the demonstrated version.
 - [x] Update the repository description to describe the read-only KB agent.
-- [ ] Confirm the repository website field points to the verified public URL.
+- [x] Confirm the repository website field points to the verified public URL.
 - [x] Include Sanity project ID `swuqfubs` and describe the private synthetic
   dataset and KB rather than implying public dataset access.
 - [x] Verify the hosted page and paid API with the existing restricted judge
@@ -53,8 +54,9 @@ authentication links out of the recording.
 
 ## Final local checks
 
-- [x] Offline tests and typecheck pass with a dedicated monitor: 233 tests on
-  October 4 (158 application and 75 Node script tests).
+- [x] Offline tests and typecheck pass with a dedicated monitor: the current
+  integration has 243 tests on October 4 (168 application and 75 Node script
+  tests), after the first-delivery validation of 233 tests.
 - [x] Production builds pass locally on Windows and on the Linux VPS.
 - [x] A live native KB question succeeds with the reviewed configuration:
   complete 14,093-character context, 3,916 input and 295 output tokens.
@@ -81,3 +83,9 @@ timeline; returning to an earlier node creates a branch rather than silently
 rewriting history. Feedback must distinguish facts, uncertainty and evidence
 coverage. Any game progress State is separate from authoritative operational
 Trama State until an explicitly approved persistence design exists.
+
+The separate protected game is now hosted at
+https://trama.beautyqueenz.com/poc/sanity/game. Its feedback is completeness-only,
+not an evaluation of closeness to a hidden correct answer. Use its own
+[Path Two writeup](../experiments/sanity-challenge-game-writeup.md), not the
+agent's feature or benchmark claims.

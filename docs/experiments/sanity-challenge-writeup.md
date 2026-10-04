@@ -18,6 +18,10 @@ Sanity plays the librarian. Its Knowledge Base organizes an archive of synthetic
 
 [Open the live investigation](https://trama.beautyqueenz.com/poc/sanity/investigate).
 
+![The case brief introduces a fictional checkout incident without revealing its cause](https://raw.githubusercontent.com/mateustalles/trama-sanity-investigation-demo/main/docs/demo/images/investigation-brief.jpg)
+
+Local production-build capture of the brief, not a recorded model answer.
+
 Sign-in is required to protect the paid model endpoint. Contact me through DEV to arrange restricted test credentials privately. Ordinary accounts do not grant access to the demo. The restricted-account HTTP flow has been checked, but the password handoff is still being finalized. A short recorded walkthrough is being prepared as an additional presentation of the same real flow.
 
 Start with the case brief, then try:
@@ -86,6 +90,6 @@ The project was developed interactively with Codex, including failed retrieval a
 
 No curated public transcript is included yet. I have kept the private development session out of the submission rather than publish credentials, recovery links or personal context with it.
 
-A player-led investigation game is the next, separate delivery: players will formulate their own hypotheses and build a timeline of Deltas. It is not a shipped feature of this agent.
+A separate [Delta investigation game](https://trama.beautyqueenz.com/poc/sanity/game) is now available: players formulate their own hypotheses and preserve a local timeline of decisions. It is the second delivery, not a feature or operational State change of this read-only agent.
 
 <!-- Publication gate: complete the signed-in judge walkthrough or record the walkthrough, review the final article, and ensure the GitHub source matches the demo. Do not publish credentials. Path Two requires a separate post and a working game, not a promised feature. -->

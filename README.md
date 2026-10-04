@@ -42,15 +42,16 @@ and access to the pilot archive; cloning alone does not grant that access.
 
 ## Build your own investigation
 
-A separate Delta game is being integrated at `/poc/sanity/game`. Build a
+[Open the Delta game](https://trama.beautyqueenz.com/poc/sanity/game). Build a
 hypothesis, choose evidence, explain your reasoning and preserve each decision
 as a step you can later challenge or branch from. Its triangle connects
 hypothesis, evidence and rationale; it does not score whether you found the truth.
 
 The game stores its notebook in your browser, not in real Trama State. Six
 frozen synthetic source excerpts provide a starting point; optional live
-Sanity retrieval adds clearly labeled generated context. Public game deployment
-is not yet verified. [Game walkthrough and limits](docs/demo/game.md).
+Sanity retrieval adds clearly labeled generated context. The protected game
+page is deployed; its branch, reload and export interactions were checked in a
+local production build. [Game walkthrough and limits](docs/demo/game.md).
 
 ## How do we know it works?
 

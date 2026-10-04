@@ -1,10 +1,24 @@
 import {describe, expect, it} from 'vitest';
-import {acceptDelta, activePath, addGeneratedEvidence, canUseAnchor, contestDelta, createGame, draftIssues, restoreGame, revertTo} from '../../../../apps/web/app/poc/sanity/game/game-model';
+import {acceptDelta, activePath, addGeneratedEvidence, canUseAnchor, contestDelta, createGame, draftIssues, resetLocalNotebook, restoreGame, revertTo} from '../../../../apps/web/app/poc/sanity/game/game-model';
 import {initialEvidence} from '../../../../apps/web/app/poc/sanity/game/game-evidence';
 
 const draft = {question: 'What caused checkout failures?', hypothesis: 'The timeout interacted with latency.', evidenceIds: ['01-deployment-record.md'], rationale: 'The release shortened the timeout.', conclusion: 'Investigate the interaction; cause remains uncertain.', closesCase: false};
 
 describe('browser-local Delta investigation', () => {
+  it('preserves the entire notebook until reset is explicitly confirmed', () => {
+    const original = addGeneratedEvidence(acceptDelta(createGame(initialEvidence), draft), 'Another clue', 'Generated context', 'What changed?');
+    const snapshot = JSON.stringify(original);
+    expect(resetLocalNotebook(original, initialEvidence, false)).toBe(original);
+    expect(JSON.stringify(original)).toBe(snapshot);
+    const fresh = resetLocalNotebook(original, initialEvidence, true);
+    expect(fresh).toEqual(createGame(initialEvidence));
+    expect(fresh.deltas).toHaveLength(0);
+    expect(fresh.events).toHaveLength(0);
+    expect(fresh.headId).toBeNull();
+    expect(fresh.evidence).toHaveLength(6);
+    expect(JSON.stringify(original)).toBe(snapshot);
+    expect(fresh.evidence[0]).not.toBe(initialEvidence[0]);
+  });
   it('requires player-owned hypothesis, evidence, rationale, and conclusion', () => {
     expect(draftIssues(createGame(initialEvidence), {...draft, rationale: '', evidenceIds: []})).toHaveLength(2);
     expect(() => acceptDelta(createGame(initialEvidence), {...draft, evidenceIds: ['fabricated']})).toThrow();

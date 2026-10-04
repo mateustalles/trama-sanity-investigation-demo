@@ -32,10 +32,20 @@ The local production game browser check accepted, concluded, returned,
 branched and contested Deltas, then restored the same D03 head and five events
 after reload. A 375-pixel responsive check found document width 375 pixels.
 Screenshots and precise remaining checks are recorded in
-[the game guide](demo/game.md). Export-download automation timed out and reset
-confirmation automation was blocked; those are not successful end-to-end
-checks. No live provider request through the game browser or public game
-deployment is claimed by this local validation.
+[the game guide](demo/game.md). The actual JSON export was found and parsed
+despite an automation event-wait timeout: head D03, three Deltas, five events
+and six evidence items. All six starting excerpts matched the frozen corpus.
+The initial native reset confirmation blocked browser automation and is not
+an end-to-end pass. A follow-up replaced it with explicit inline confirmation;
+243 offline tests (168 Vitest and 75 Node), typecheck and build passed. The
+additional reset guard verifies that cancellation preserves the whole notebook
+and only confirmation creates a fresh state. Browser checking of the new
+inline controls remains separate.
+No live provider request through the game browser is claimed by this local
+validation. A later Linux build and deployed restricted-judge HTTP check
+verified game page 200, anonymous redirect 307, game POST and operational API
+403, and the shared native API 200. Details and remaining password/reset/live
+browser checks are separated in the game guide.
 
 ## Offline AI harness
 

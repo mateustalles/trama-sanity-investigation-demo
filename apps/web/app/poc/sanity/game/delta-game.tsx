@@ -2,7 +2,7 @@
 
 import {useEffect, useRef, useState, type FormEvent, type ReactElement} from 'react';
 import type {NativeDemoResult} from '../../../../../../scripts/sanity-kb-native-demo.mjs';
-import {acceptDelta, activePath, addGeneratedEvidence, canUseAnchor, contestDelta, createGame, draftIssues, isContested, restoreGame, revertTo, type Delta, type DeltaDraft, type GameState} from './game-model';
+import {acceptDelta, activePath, addGeneratedEvidence, canUseAnchor, contestDelta, createGame, draftIssues, isContested, resetLocalNotebook, restoreGame, revertTo, type Delta, type DeltaDraft, type GameState} from './game-model';
 import {initialEvidence} from './game-evidence';
 import styles from './delta-game.module.css';
 
@@ -32,6 +32,7 @@ export function DeltaGame() {
   const [result, setResult] = useState<NativeDemoResult | null>(null);
   const [resultAdded, setResultAdded] = useState(false);
   const [searchError, setSearchError] = useState('');
+  const [resetRequested, setResetRequested] = useState(false);
   const searchVersion = useRef(0);
   const searchController = useRef<AbortController | null>(null);
 
@@ -125,12 +126,13 @@ export function DeltaGame() {
     const link = document.createElement('a'); link.href = url; link.download = 'trama-delta-notebook.json'; link.click(); URL.revokeObjectURL(url);
   }
   function reset() {
-    if (!window.confirm('Start a fresh local case? Export first if you want to keep this notebook. This does not change any Trama or server data.')) return;
+    if (!resetRequested) return;
     ++searchVersion.current;
     searchController.current?.abort(); searchController.current = null;
-    setState(createGame(initialEvidence)); setDraft({...emptyDraft}); setReviewId(null);
+    setState(previous => resetLocalNotebook(previous, initialEvidence, true)); setDraft({...emptyDraft}); setReviewId(null);
     setQuestion(''); setResult(null); setResultAdded(false); setReason('');
     setPending(false); setSearchError(''); setStorageWarning('');
+    setResetRequested(false);
     setNotice('A fresh local investigation is ready.');
   }
 
@@ -169,7 +171,8 @@ export function DeltaGame() {
     </div>
     <p className={styles.notice} role="status" aria-live="polite">{notice}</p>{storageWarning && <p className={styles.error} role="alert">{storageWarning}</p>}
 
-    <section className={styles.map} aria-labelledby="map-heading"><div className={styles.sectionHeading}><div><p className={styles.eyebrow}>03 / An evolving map, not a rewritten history</p><h2 id="map-heading">Your Delta branches</h2></div><div className={styles.tools}><button onClick={exportNotebook} type="button">Export notebook</button><button onClick={reset} type="button">Start fresh</button></div></div>
+    <section className={styles.map} aria-labelledby="map-heading"><div className={styles.sectionHeading}><div><p className={styles.eyebrow}>03 / An evolving map, not a rewritten history</p><h2 id="map-heading">Your Delta branches</h2></div><div className={styles.tools}><button onClick={exportNotebook} type="button">Export notebook</button><button onClick={() => setResetRequested(true)} type="button" aria-expanded={resetRequested} aria-controls="reset-confirmation">Start fresh</button></div></div>
+      {resetRequested && <div id="reset-confirmation" className={styles.resetConfirmation} role="group" aria-labelledby="reset-confirmation-heading"><h3 id="reset-confirmation-heading">Reset this local notebook?</h3><p>Export first if you want to keep your evidence and Delta history. Resetting clears this browser notebook and the current draft, but does not change any Trama or server data.</p><div className={styles.tools}><button type="button" onClick={() => setResetRequested(false)}>Keep notebook</button><button type="button" onClick={reset}>Reset local notebook</button></div></div>}
       {!state.deltas.length && <p>Your first accepted Delta will appear here. Then you can return, challenge it, or create another branch.</p>}
       <div className={styles.branchMap}><ol className={styles.treeRoots} aria-label="Delta ancestry tree">{state.deltas.filter(delta => delta.parentId === null).map(renderBranch)}</ol></div>
       {reviewed && <article className={styles.review}><p className={styles.eyebrow}>Inspect / {reviewed.id}</p><h3>{reviewed.question}</h3><dl><dt>Hypothesis</dt><dd>{reviewed.hypothesis}</dd><dt>Evidence</dt><dd>{reviewed.evidenceIds.map(id => state.evidence.find(item => item.id === id)?.title ?? id).join(' · ')}</dd><dt>Rationale</dt><dd>{reviewed.rationale}</dd><dt>Conclusion</dt><dd>{reviewed.conclusion}</dd></dl><button type="button" onClick={() => returnTo(reviewed)} disabled={!canUseAnchor(state, reviewed.id)}>Return here & build a branch</button><label htmlFor="contest-reason">New evidence or reason to contest<textarea id="contest-reason" value={reason} rows={2} maxLength={4000} onChange={event => setReason(event.target.value)}/></label><button type="button" onClick={() => challenge(reviewed)} disabled={!reason.trim() || isContested(state, reviewed.id)}>Contest this Delta / preserve history</button></article>}

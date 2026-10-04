@@ -4,7 +4,7 @@ published: false
 tags: devchallenge, sanitychallenge, sanity, ai
 ---
 
-*This is a draft for the [Sanity Challenge, Path Two: Vibe-Code Something Strange](https://dev.to/challenges/sanity-2026-09-16). Local production interactions have been checked; the post is not ready for publication until public game deployment is verified.*
+*This is a submission for the [Sanity Challenge, Path Two: Vibe-Code Something Strange](https://dev.to/challenges/sanity-2026-09-16).*
 
 ## What I Built
 
@@ -18,11 +18,11 @@ The board is deliberately not a root-cause oracle. Its feedback checks whether y
 
 ## Demo
 
-The game route is `/poc/sanity/game`. It is being integrated into the same application as the [hosted read-only agent](https://trama.beautyqueenz.com/poc/sanity/investigate), but public game deployment has not been verified yet. A verified deployed game link must be added here before publishing this second submission.
+[Open the Delta game](https://trama.beautyqueenz.com/poc/sanity/game). It shares the protected application with the separate [read-only investigation agent](https://trama.beautyqueenz.com/poc/sanity/investigate). Contact me through DEV to arrange restricted review access privately; password handoff is being finalized. No provider key is needed in the browser.
 
 ![A preserved D03 triangle beside the new D04 draft, with hypothesis, evidence and rationale orbs](https://raw.githubusercontent.com/mateustalles/trama-sanity-investigation-demo/main/docs/demo/images/delta-progression.jpg)
 
-Local production-build capture: an accepted Delta becomes the smaller triangle and a fresh draft takes the center. This capture does not certify public deployment.
+Local production-build capture: an accepted Delta becomes the smaller triangle and a fresh draft takes the center. The game is now hosted, but this screenshot was taken locally.
 
 ![D01 branches to a contested D02 and the active D03 without deleting history](https://raw.githubusercontent.com/mateustalles/trama-sanity-investigation-demo/main/docs/demo/images/delta-branches.jpg)
 
@@ -62,7 +62,11 @@ There are practical limits too. Drafts are not persisted. Local storage is share
 
 The integration passed 242 offline tests (167 Vitest and 75 Node script tests), typecheck and the local production build. The browser walkthrough accepted D01, concluded D02, returned to D01 to create an open sibling D03, then contested D02 without moving the active D03 branch. Reload restored the same head and five events. A responsive check at 375 pixels found no wider document than the viewport. These checks verify behavior, not the truth of a player's hypothesis.
 
-The optional live request has not yet been exercised through the game browser. Export-download automation timed out, and the reset confirmation could not be exercised by that automation; neither is claimed as an end-to-end pass. Public game deployment and hosted game access also remain checks. The first-delivery benchmark and agent smoke do not substitute for them.
+The six starting excerpts were compared paragraph by paragraph with the frozen corpus, with zero mismatches. JSON export was verified by parsing the actual downloaded notebook: version 1, active D03, three Deltas, five events and six evidence items. The automation's download-event wait timed out, but the output existed and was checked rather than treating that timeout as the result.
+
+The Linux production build passed too. The hosted game returned HTTP 200 for the restricted judge and redirected an anonymous visitor. Game POST and unrelated operational API requests were denied with 403. The shared native investigation API returned 200 with the full 14,093-character response and an OpenAI answer. This was an HTTP check, not a browser interaction with the game's live-context controls.
+
+The optional live request has not yet been exercised through the game browser. The reset confirmation could not be exercised by automation, so it is not claimed as an end-to-end pass. Password-form testing and private credential handoff also remain pending. The first-delivery benchmark and agent smoke do not substitute for them.
 
 ## Sanity Project Details
 
@@ -77,4 +81,4 @@ The optional live request has not yet been exercised through the game browser. E
 
 The project was developed interactively with Codex. No curated public transcript is included yet; the private session contains operational setup and must be reviewed before sharing. The design corrections above summarize the relevant decisions without claiming to be a verbatim transcript.
 
-<!-- Path Two publication gate: verify the deployed game URL; confirm the included local screenshots are accessible in the public repository; confirm source matches deployment; privately deliver restricted access instructions. Keep Path One as its own post. Do not publish provider keys, passwords or recovery links. -->
+<!-- Path Two publication gate: review the final post; confirm included local screenshots are accessible in the public repository; privately arrange restricted review access and finish credential handoff. Keep Path One as its own post. Do not publish provider keys, passwords or recovery links. -->

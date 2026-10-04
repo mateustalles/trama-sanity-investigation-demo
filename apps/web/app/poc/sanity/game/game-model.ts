@@ -14,6 +14,12 @@ export function createGame(evidence: Evidence[]): GameState {
   return {version: 1, evidence: evidence.map(item => ({...item})), deltas: [], events: [], headId: null};
 }
 
+export function resetLocalNotebook(state: GameState, initialEvidence: Evidence[], confirmed: boolean): GameState {
+  // Requesting or cancelling reset is non-destructive; only explicit confirmation
+  // replaces the local notebook. This never targets operational Case State.
+  return confirmed ? createGame(initialEvidence) : state;
+}
+
 export function isContested(state: GameState, id: string): boolean {
   return state.events.some(event => event.type === 'contested' && event.deltaId === id);
 }

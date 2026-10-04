@@ -1,8 +1,8 @@
 # Sanity investigation game — second delivery concept
 
 This document preserves the earlier design proposal. On October 4, a narrower
-browser-local game is being integrated at `/poc/sanity/game`; its public
-deployment is not yet verified. See [the current game guide](../demo/game.md)
+browser-local game is now hosted at `/poc/sanity/game`, with a checked restricted
+judge HTTP page and local production interactions. See [the current game guide](../demo/game.md)
 and [the separate Path Two draft](sanity-challenge-game-writeup.md) for the
 implemented scope. The proposal below is not a list of shipped capabilities.
 

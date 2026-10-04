@@ -1,10 +1,10 @@
 # The Delta investigation game
 
-Status on October 4, 2026: the game is being integrated at
-`/poc/sanity/game`; local production-build interactions have been checked, but
-public game deployment is not yet verified. The separate
-[read-only agent](README.md) is already hosted. Do not
-treat that agent's deployment checks as validation of this game.
+Status on October 4, 2026: [the game is deployed](https://trama.beautyqueenz.com/poc/sanity/game)
+with HTTPS and restricted access. Local production-build interactions and the
+hosted restricted-judge HTTP page were checked separately. Password-based
+browser sign-in and optional live retrieval through the game browser remain
+untested; do not treat the separate [agent](README.md) smoke as those checks.
 
 ## Your challenge
 
@@ -45,7 +45,7 @@ write, approve or contest game steps automatically.
 ![An accepted D03 sits beside the new D04 draft, with hypothesis, evidence and rationale orbs](images/delta-progression.jpg)
 
 Local production-build capture: the accepted step is smaller, and the next
-draft is central. This is not a screenshot of a verified deployed game.
+draft is central. This capture was taken locally, not on the hosted URL.
 
 ![D01 branches to a contested D02 and the active D03](images/delta-branches.jpg)
 
@@ -79,8 +79,9 @@ The notebook is not account-scoped or encrypted: people using the same browser
 origin can encounter the same local notebook. Clearing browser data removes it.
 
 Use **Export notebook** to download JSON before leaving or resetting.
-**Start fresh** asks for confirmation and starts a new local notebook; it does
-not delete Trama, Supabase or Sanity data. There is no JSON import control in
+**Start fresh** shows an inline export-first warning. **Keep notebook** cancels
+without changing the notebook; **Reset local notebook** explicitly confirms
+the reset. This does not delete Trama, Supabase or Sanity data. There is no JSON import control in
 this MVP. If local storage is unavailable, play can continue, but export is the
 way to retain the accepted history.
 
@@ -93,8 +94,8 @@ assumption without deleting history. Finish by exporting the notebook and
 explaining the completeness-only feedback.
 
 The Path Two submission needs a verified deployed game link plus a video or
-screenshots. Local production screenshots are included above; public game
-deployment remains pending. Keep the first-delivery
+screenshots. The protected deployed game link and local production screenshots
+are included above. Keep the first-delivery
 agent writeup separate; use
 [the game writeup draft](../experiments/sanity-challenge-game-writeup.md) for
 the second post after validation.
@@ -108,9 +109,27 @@ the open sibling D03 and contested D02 without changing the active D03 branch.
 Reload restored D03 and its five-event history. A 375-pixel viewport had a
 375-pixel document width in the responsive check.
 
+The Linux production build also passed. The active deployment uses source
+commit `e1112cb`. A real restricted-judge HTTP session returned game page 200;
+anonymous access redirected with 307. Game POST and unrelated operational API
+requests returned 403. A call to the shared native investigation API returned
+200 with all 14,093 context characters, 3,916 input and 268 output tokens,
+and 6.119 seconds total latency. This verifies the shared API via HTTP, not
+the game's browser controls for keeping and selecting live context.
+
+All six starting excerpts were compared paragraph by paragraph with the frozen
+corpus: six checked, zero mismatches. This verifies those shipped excerpts,
+not current live KB source coverage or independent claim support.
+
 The optional provider request has not yet been exercised through the game
-browser. Export-download automation timed out; the reset confirmation could
-not be exercised by that automation. Both controls exist, but those attempts
-are not successful end-to-end checks. Public game deployment and signed-in
-hosted game access remain pending. The separate agent's live results do not
-substitute for these checks.
+browser. Although the export automation's event wait timed out, its actual
+download was found and parsed: version 1, head D03, three Deltas, five events
+and six evidence items. Export therefore has an output-based verification.
+The initial native reset dialog blocked browser automation. It was replaced
+with the explicit inline confirmation above; the final offline regression
+passed 243 tests (168 Vitest and 75 Node tests), typecheck and build, including
+a reset guard that preserves the original notebook until confirmation. The
+new inline controls have not yet been verified end-to-end in that browser.
+Password-form testing and private credential
+handoff also remain pending. The separate agent's live results do not
+substitute for those checks.

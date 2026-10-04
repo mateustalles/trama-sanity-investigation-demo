@@ -174,7 +174,8 @@ Tests use mocks; they do not certify live endpoint access or answer correctness.
 Live smoke testing consumes provider quota. Historic benchmark run artifacts
 and local logs are intentionally excluded from Git. Research notes describe
 selected synthetic comparisons, not guaranteed performance on arbitrary data.
-The player-led Delta game remains a separate concept, not a feature of this demo.
+The [player-led Delta game](game.md) is a separate delivery, not a feature of
+the read-only agent.
 Use [the delivery checklist](delivery-one-checklist.md) to prepare the Path One
 post and walkthrough. A temporary tunnel is a testing URL and only stays alive
 while its server and tunnel processes are running; do not describe it as stable
@@ -182,7 +183,8 @@ production hosting.
 
 ## MVP scope
 
-The published app exposes the investigation and its authentication flow.
+The published app exposes the investigation, browser-local game and
+authentication flow.
 The personal organizer, product chat, settings, and operational write APIs are
 not exposed. Legacy product components remain in the source tree, but the route
 boundary redirects other pages to the investigation and rejects unrelated API
