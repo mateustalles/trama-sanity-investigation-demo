@@ -1,14 +1,13 @@
 import {randomUUID} from 'node:crypto'
-import {createDemoAdapters, investigateDemoQuestion, validateDemoQuestion} from '../../../../../../../scripts/sanity-demo-agent.mjs'
+import {createNativeKnowledgeBaseDemoAdapters, investigateNativeKnowledgeBaseQuestion, validateNativeDemoQuestion} from '../../../../../../../scripts/sanity-kb-native-demo.mjs'
 import {hostedAuthConfigured} from '../../../../../lib/supabase/config'
 import {currentHostedUser} from '../../../../../lib/supabase/session'
-import {isDemoJudge, demoJudgeExpired} from '../../../../../lib/supabase/demo-judge'
+import {isDemoJudge, demoJudgeExpired, demoAccountAllowed} from '../../../../../lib/supabase/demo-judge'
 import {createSupabaseAdminClient} from '../../../../../lib/supabase/admin'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-const pilotEndpoint = 'https://api.sanity.io/v1/context/organizations/o6xohyg5w/mcp/trama-evidence-pilot-groq'
 const windowMs = 10 * 60 * 1000
 const maxRequests = 6
 const attempts = new Map<string, number[]>()
@@ -28,12 +27,16 @@ export async function POST(request: Request) {
       (process.env.NODE_ENV !== 'development' || !['localhost','127.0.0.1'].includes(new URL(request.url).hostname))) {
     return Response.json({error:'The demo is available without sign-in only in local development.'},{status:403})
   }
+  if (!demoAccountAllowed(user,{requireJudge:process.env.TRAMA_DEMO_REQUIRE_JUDGE === 'true',
+    operatorId:process.env.TRAMA_DEMO_OPERATOR_ID})) {
+    return Response.json({error:'This account is not authorized for the demo.'},{status:403})
+  }
   const raw = await request.text()
   if (raw.length > 2_000) return Response.json({error:'Request body is too large.'},{status:413})
   let question: string
   try {
     const payload = JSON.parse(raw) as {question?: unknown}
-    question = validateDemoQuestion(payload.question)
+    question = validateNativeDemoQuestion(payload.question)
   } catch (error) {
     return Response.json({error:error instanceof Error ? error.message : 'Invalid request.'},{status:400})
   }
@@ -41,7 +44,8 @@ export async function POST(request: Request) {
 
   const organizationToken = process.env.SANITY_ORGANIZATION_TOKEN
   const openAiKey = process.env.OPENAI_API_KEY ?? process.env.OPEN_API_KEY
-  if (!organizationToken || !openAiKey) {
+  const mcpEndpoint = process.env.SANITY_CONTEXT_EVIDENCE_MCP_URL
+  if (!organizationToken || !openAiKey || !mcpEndpoint) {
     return Response.json({error:'The demo is not configured on this server yet.'},{status:503})
   }
   const requestId = randomUUID()
@@ -52,14 +56,11 @@ export async function POST(request: Request) {
       if (error) return Response.json({error:'Judge quota is not configured.'},{status:503})
       if (data !== 'allowed') return Response.json({error:'Judge access or quota limit reached.'},{status:data === 'rate_limited' ? 429 : 403})
     }
-    const adapters = createDemoAdapters({
-      mcpEndpoint:process.env.SANITY_CONTEXT_PILOT_GROQ_MCP_URL ?? process.env.TRAMA_BENCHMARK_PILOT_GROQ_MCP_URL ?? pilotEndpoint,
-      organizationToken,openAiKey,
-    })
-    const result = await investigateDemoQuestion(question,adapters)
+    const adapters = createNativeKnowledgeBaseDemoAdapters({mcpEndpoint,organizationToken,openAiKey})
+    const result = await investigateNativeKnowledgeBaseQuestion(question,adapters)
     return Response.json({...result,requestId},{headers:{'Cache-Control':'no-store'}})
   } catch (error) {
     console.error(`Sanity pilot demo ${requestId}:`,error instanceof Error ? error.message : String(error))
-    return Response.json({error:'The investigation could not be completed. No unsourced answer was shown.',requestId},{status:502,headers:{'Cache-Control':'no-store'}})
+    return Response.json({error:'The investigation could not be completed. No unsupported answer was shown.',requestId},{status:502,headers:{'Cache-Control':'no-store'}})
   }
 }

@@ -1,5 +1,51 @@
 # Sanity Context live evidence-agent demo
 
+## Current delivery on October 4
+
+The current submission switches Demo 1 to native `knowledge_base_search` over
+the ready pilot KB `kbkpWkNaMVN6`. It requests five complete generated entries,
+provides the returned text unchanged to GPT-6 Sol, and exposes the actual query,
+tool arguments, generated context, answer and limitations. There is no host
+reranking, character cap, original-source follow-up or keyword fallback in this
+route. Suggested prompts use fixed manual search terms; free-form questions
+are passed verbatim to the native keyword search and this is disclosed.
+
+The generated entries must not be labeled verified originals. The existing
+GROQ/embeddings orchestrator is retained as historical experiment code; the
+walkthrough below describes that earlier version, not the current route.
+See [the setup guide](../demo/README.md), [publication checklist](../demo/delivery-one-checklist.md)
+and [native comparison methodology](sanity-kb-search-model-comparison.md).
+
+The completed 160-answer experiment recorded OpenAI KB 37/40 versus local
+keyword 32/40, and Qwen KB 30/40 versus 27/40. A separate, conservative UTC
+grading replay accepts equivalent `HH:MM UTC` values and yields OpenAI 38/40
+versus 34/40 without new model calls. The original run remains unchanged.
+These are one-repetition synthetic results, with more context tokens in the KB
+arm and seven shared-State cases, not a general semantic-retrieval claim.
+
+On October 4, offline validation passed 233 tests (158 application and 75 Node)
+and workspace typecheck. Windows and Linux production builds passed. The
+separate UTC audit executed successfully with the expected three promotions
+and no model calls.
+
+A live smoke of “What might explain the checkout failure?” used the free-form
+verbatim query path and delivered all 14,093 returned characters. Its response
+used 3,916 input and 295 output tokens, with 7.285 seconds total latency. The
+public deployment at https://trama.beautyqueenz.com/poc/sanity/investigate has
+verified TLS and anonymous boundaries (login 200, demo redirect 307, unsigned
+paid API 401, unrelated operational API 403).
+
+A separate temporary session for the existing restricted judge verified page
+200, paid native API 200 and operational write API 403. Its curated question
+used the declared fixed query and forwarded all 13,312 returned characters;
+usage was 3,701 input and 127 output tokens, total latency 4.480 seconds. The
+session was signed out after the check without resetting a password or changing
+account metadata. Password-form and password-based browser testing remain a
+final check. A passing benchmark or smoke is not proof that every free-form
+query or source support works.
+
+## Historical GROQ prototype
+
 Publication update (1 October 2026): this distribution opens the investigation
 at its homepage and provides a complete authentication flow in the same
 language. It does not expose the general product chat or operational routes.

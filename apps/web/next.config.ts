@@ -15,6 +15,9 @@ if (existsSync(workspaceEnvironment)) {
 }
 
 const config: NextConfig = {
+  experimental: process.env.TRAMA_LOW_MEMORY_BUILD === 'true'
+    ? {cpus: 1, webpackMemoryOptimizations: true}
+    : {},
   allowedDevOrigins: ["*.trycloudflare.com"],
   transpilePackages: [
     "@trama/application",

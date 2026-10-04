@@ -6,7 +6,7 @@ import "./calendar.css";
 
 export const metadata: Metadata = {
   title: "The Checkout Investigation · Trama",
-  description: "Find original evidence, test competing explanations, and investigate what happened."
+  description: "Explore Knowledge Base context, test competing explanations, and investigate what happened."
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

@@ -14,6 +14,12 @@ and correctly expressed uncertainty.
 
 Passing unit tests is not a model accuracy score.
 
+On October 4, 2026, the current validation passed 158 application tests and
+75 Node script tests (233 total), plus workspace typecheck. Windows and Linux
+production builds also passed. Live smoke and public boundary checks are
+recorded separately in [Demo 1 readiness](experiments/sanity-demo-1-readiness.md);
+none of these substitutes for manual answer review or a signed-in judge flow.
+
 ## Offline AI harness
 
 ```powershell
@@ -52,9 +58,30 @@ test orchestration and validation, not independent answer-generation skill.
 Some metadata such as duration or ingestion time varies; assertions focus on
 stable behavior rather than byte-for-byte equality of every result field.
 
+### Native KB demo coverage
+
+The current demo is covered by
+`__test__/scripts/sanity-kb-native-demo.test.mjs`. Fixed adapters assert that
+the host makes one authorized native `knowledge_base_search` call, requests
+five entries, forwards its full text unchanged and exposes it as generated
+context. Cases cover the six prewritten suggested-query mappings, verbatim
+free-form questions, no answer or fallback after empty/failed retrieval,
+required answer fields, invalid navigation references, server-only credentials
+and the read-only presentation boundary.
+
+Those tests do not establish that a generated KB entry accurately represents
+its originals. The historical GROQ/original-source fixtures below test a
+different pipeline that remains available for research.
+
 ### Adding a case
 
-Start with `__test__/scripts/sanity-demo-agent.test.mjs`. Define a small
+For the current demo, start with `__test__/scripts/sanity-kb-native-demo.test.mjs`
+and inject a fixed `searchKnowledgeBase` result plus `generateJson` response.
+Assert the query, complete delivered text and failure behavior without a live
+provider call. Include a negative case, not just a plausible answer.
+
+For the historical original-source pipeline, start with
+`__test__/scripts/sanity-demo-agent.test.mjs`. Define a small
 synthetic evidence set and inject `groqRows` and `generateJson` adapters.
 State the expected sources, behavior, and failure mode explicitly, then assert
 those properties. Cover a successful path and a negative control—for example,
@@ -67,12 +94,24 @@ Live runs use real retrieval and model calls. They may cost money and are not
 part of `pnpm test` or `pnpm test:ai`. Research runners and previous methodology
 are documented under `docs/experiments/`; local run artifacts are not published.
 
+The [Knowledge Base navigation pilot](experiments/sanity-kb-navigation-pilot.md)
+records a separate KB-index-to-originals experiment, including its source-budget
+gap. Its five contract-valid answers are not five automatic semantic passes.
+
 A useful future evaluation record should retain the case question, corpus
 revision, retrieval inputs, delivered sources, prompt/contract version,
 model/version, answer, expected structured facts, grader explanation,
 token usage, latency, and manual reviewer feedback. Replay the same source
 packet when comparing reasoning models; hold corpus, scope, and retrieval
 budget fixed when comparing retrieval methods.
+
+The original native comparison used grader v4.5. A narrow, host-only UTC-time
+equivalence correction is recorded in
+[the separate grading audit](experiments/kb-search-grading-audit.md). The offline
+replay preserved the source run and promoted exactly three answers, without
+any retrieval or inference calls. It is a correction to evaluation, not an
+improvement in the model. Other enums, actions, timestamps and string facts
+remain strict; execution errors cannot become a PASS through the replay.
 
 Repeat cases to measure variation. Temperature settings alone do not make a
 remote model deterministic. Report missing evidence separately from incorrect
@@ -81,6 +120,9 @@ An optional model-based grader is advisory, not a replacement for explicit
 facts and human review.
 
 ## Manual audit still matters
+
+The [native KB search comparison](experiments/sanity-kb-search-model-comparison.md)
+documents the frozen 40-case, two-arm, two-model experiment and its limitations.
 
 Read the original behind each important claim. Ask whether it concerns the
 right incident and date, whether it supports the claim, and whether a proposed

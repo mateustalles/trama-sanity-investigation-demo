@@ -1,5 +1,5 @@
 ---
-title: "Trama: an evidence librarian for investigations that cannot start with the answer"
+title: "Trama investigates a checkout incident with Sanity Knowledge Base"
 published: false
 tags: devchallenge, sanitychallenge, sanity, ai
 ---
@@ -8,57 +8,84 @@ tags: devchallenge, sanitychallenge, sanity, ai
 
 ## What I Built
 
-Trama helps a person investigate a messy, evolving problem without confusing a plausible story with a verified conclusion. An investigation has questions, competing hypotheses, evidence, and unresolved uncertainty. The difficult first step is often finding the *right* records among many similar-looking ones. A powerful language model cannot reason its way around an original document that never reaches it.
+A release goes live. A few minutes later, payments start failing. Several teams leave reports, measurements and follow-up notes. Some describe the incident; others concern different providers, dates or cases. Where do you begin?
 
-For this challenge, I built a read-only evidence agent around a fictional September 2026 checkout incident. The visitor starts with a short case brief, then asks their own question or chooses an investigative starting point: establish a timeline, inspect a change, check a measurement, or test alternatives. The agent searches a 145-document synthetic archive, retrieves exact original records, and returns a qualified answer with the records and retrieval trace visible for inspection. It distinguishes what a record observes from what the agent infers and what remains unknown.
+Trama is an investigation assistant for that moment. It helps a person ask questions, explore competing explanations and distinguish what the evidence shows from what still needs checking. The broader product is an operational memory for evolving problems: a car repair, a legal matter or a technical incident. This challenge demo uses one fictional checkout incident so visitors can investigate without exposing anyone's personal data.
 
-This is deliberately **not** a root-cause button. The agent does not approve a hypothesis, apply a Trama Delta, or change authoritative Case State. A separate player-led investigation game—where a user would construct and revise their own Deltas—is a design proposal, not a capability of this submitted demo.
+Sanity plays the librarian. Its Knowledge Base organizes an archive of synthetic records into searchable entries. Trama asks Sanity for relevant context, gives the complete returned entries to the reasoning model, and presents an answer with its limitations and retrieval trail. The goal is not to make an AI declare a root cause. It is to help a person find a defensible explanation.
 
 ## Demo
 
-**Live demo:** [ADD PUBLIC, READ-ONLY DEMO URL]
+[Open the live investigation](https://trama.beautyqueenz.com/poc/sanity/investigate).
 
-The demo presents a fictional case, suggested lines of inquiry, a free-form question box, the agent's answer and limitations, expandable original-source bodies, and the Context MCP/GROQ retrieval trace. A useful first question is: “What changed in checkout shortly before the September 18 payment failures began?” Then ask what the Provider A latency observation recorded, or whether the postal-code and fraud records support alternative explanations. The initial brief does not state the cause.
+Sign-in is required to protect the paid model endpoint. Reviewers should use the restricted test credentials supplied for review, or contact me through DEV for access. Ordinary accounts do not grant access to the demo. A short recorded walkthrough is being prepared as an additional presentation of the same real flow.
 
-The current local route is `/poc/sanity/investigate`; `127.0.0.1` is only a development address, **not** a judge-accessible demo. Judges will receive a dedicated, limited test account through the normal invitation flow. [ADD THE DEMO URL AND THE SAFE ACCOUNT-DELIVERY INSTRUCTIONS; DO NOT PUT A PASSWORD OR API KEY IN THIS POST.] The demo makes server-side Sanity and model API calls, so access remains authenticated and read-only.
+Start with the case brief, then try:
+
+- “What changed shortly before the payment failures began?”
+- “What do the measurements tell us about the incident?”
+- “What evidence challenges the leading explanation?”
+- “What would we still need before treating that explanation as confirmed?”
+
+The initial brief does not name a cause. Visitors can choose an investigative starting point or ask their own question. The interface shows the answer, a qualified conclusion, limitations, the query sent to Sanity, and the complete generated Knowledge Base material used by the model.
+
+Each question starts a new read-only retrieval. This version does not persist a conversation, remember previous answers or build investigation State. Suggested questions have declared search terms; other questions use their own wording directly, and the retrieval trail makes that distinction visible.
+
+Generated entries are visibly labeled as generated context, not verified original documents. They contain references to the underlying records, but displaying a reference does not prove that a claim is supported by that original. For consequential decisions, the person should inspect the underlying source.
+
+The demo is read-only. It cannot apply a Delta, approve a hypothesis or change authoritative Trama State. Hosted access uses a dedicated, restricted judge account rather than an owner's login. Credentials are shared privately; API keys never belong in the post or browser. Questions go to Sanity and OpenAI, so visitors should not enter personal or confidential information.
 
 ## Code
 
-**Repository:** [Trama × Sanity investigation demo](https://github.com/mateustalles/trama-sanity-investigation-demo). The public source snapshot includes a setup and walkthrough guide; it excludes the private product repository's history and credentials.
+[Public repository and setup guide](https://github.com/mateustalles/trama-sanity-investigation-demo)
 
-The live agent flow is in `scripts/sanity-demo-agent.mjs`; the scoped query and source-verification helpers are in `scripts/sanity-content-lake-evidence.mjs`; the API and UI are in `apps/web/app/api/poc/sanity/investigate/route.ts` and `apps/web/app/poc/sanity/investigate/`. The benchmark methods and limitations are documented under `docs/experiments/`.
+The repository contains the app and instructions, not access credentials to the private pilot archive. The [demo guide](https://github.com/mateustalles/trama-sanity-investigation-demo/blob/main/docs/demo/README.md) explains the requirements and walkthrough. The source snapshot is separate from the private product repository and its history.
 
 ## How I Used Sanity
 
-The archive lives in a private Sanity Content Lake dataset as `evidenceSource` documents. Each document has a preserved original `body` plus structured `workspaceId`, `scopeId`, `sourceId`, `title`, content hash, and source metadata. The dataset embeds the `{title, body}` projection. The current contest agent connects to a **Sanity Context MCP endpoint in GROQ mode with embeddings enabled**. It does not ask a generated Knowledge Base entry to supply the final answer. The [challenge explicitly accepts a full-dataset Context MCP endpoint with embeddings for Path One](https://dev.to/devteam/join-the-sanity-challenge-2500-in-prizes-for-five-winners-514m); I am using that alternative, not claiming that this route reads a built Knowledge Base.
+The original archive is modeled in Sanity Content Lake as `evidenceSource` documents. Each keeps its raw body alongside a title, stable source identifier, source metadata, content hash, Workspace and case scope. The pilot contains 145 synthetic documents: 24 primary records and 121 distractors. These fields distinguish an original record and its scope from an AI-generated interpretation; they are not hidden labels identifying the correct answer.
 
-For each question, the server—not the model—fixes the synthetic workspace and incident scope and constructs bounded GROQ queries. Through Context MCP's `groq_query` tool, it first ranks candidate IDs with `text::semanticSimilarity`. It also runs a scoped `text::query` keyword search as a visible candidate-level comparator. For a question with several distinct evidence facets, a model proposes a small, validated search plan; the server may run separate semantic searches and combine their candidates. The model never receives unrestricted GROQ-writing authority. The server then reads up to ten selected records by exact ID and the same scope filter, subject to a 12,000-character original-source packet.
+I built the existing Knowledge Base from this archive and connected the agent through Sanity Context MCP. The demo uses the native `knowledge_base_search` tool with `return: "entries"` and a limit of five KB entries. These are entries, not a five-original-document cap: one entry may reference several records.
 
-Before an original reaches the answering model, the server checks its scoped identity and SHA-256 against the body returned by Content Lake and requires a source revision. That is an *internal Content Lake consistency check*, not independent proof that an external report is true or a comparison with an external source registry. The answer model receives the verified original bodies—not a generated KB summary or benchmark answer key. It must provide an answer, a qualified conclusion, limitations, and names of sources it actually read. The server rejects a source name outside the delivered packet. The interface exposes original text and provenance so a human can audit whether the cited records really support the claims; name validation alone cannot establish semantic support.
+The native tool describes its search as keyword/BM25 over the built entries. This version is **not** a claim that the tool performs embedding similarity. The useful distinction is what it searches: organized, generated KB content rather than only the raw documents. Suggested questions have search terms declared in advance; free-form behavior and the actual query are exposed in the demo rather than hidden behind an unexplained retrieval score.
 
-Why structure matters here: `workspaceId` and `scopeId` limit the query to the intended pilot scope, while similar-looking distractors deliberately inside that scope remain a real retrieval challenge; stable IDs support exact reads after ranking; revisions and hashes make the packet inspectable; and original text remains distinct from an AI-generated interpretation. Sanity is the *evidence librarian and structured source store*. Trama is the reasoning layer that asks what the evidence permits us to conclude.
+Trama forwards the full returned text to the answer model. It does not rerank it, remove referenced documents, shorten the entries or fall back to a local keyword search. If Sanity returns no usable context or fails, the demo reports the gap instead of silently switching methods. The separate keyword baseline exists only in the experiment.
 
-The opportunity may be clearest in open, human questions whose useful concepts are not literal document keywords: what made a change risky, whether a vendor observation is causally relevant, or which record challenges a tempting explanation. A Knowledge Base build can organize prose around these concepts ahead of time, giving an agent an outline and a hypothesis about where to look; dataset embeddings can rank semantically related originals when useful facts live in prose rather than in a clean field. This is a research hypothesis, not a demonstrated advantage of our current direct-originals demo. The critical constraint is that a generated entry is navigation and synthesis, not automatically proof: for a consequential Trama conclusion, the agent should still expose and reason from the underlying source.
+There are important limits. The build was imported from 145 documents, but the audited entries reference 82 distinct registered originals; the build report lists 63 discarded sources and one issue. Import count is not source coverage. A generated synthesis also is not authoritative proof of a statement, and historical evidence cannot establish whether a Trama Delta was applied. Operational State and evidence remain different things.
 
-That distinction also explains the current implementation boundary. The submitted Demo 1 uses scoped GROQ mode with dataset embeddings and exact originals, because its synthetic corpus is already modeled as consistent `evidenceSource` documents and the final answer must remain source-grounded. Earlier Knowledge Base experiments exposed source-fidelity concerns, so treating generated entries as navigation hints rather than authoritative proof is intentional. It does not imply that Knowledge Bases are generally unsuitable; the proposed next experiment is a genuinely open-question corpus where KB-generated conceptual organization can be evaluated against keyword and embedding retrieval while preserving original-source audit.
+### What we measured
 
-### What the experiments did—and did not—show
+We ran the existing 40-question structured suite through two independent arms and two reasoning models. The Sanity arm searched generated KB entries; the local keyword arm used MiniSearch over all 145 raw documents, without Sanity. Queries were frozen in advance. Each context packet was retrieved once and replayed to both models. No benchmark answer key went into a model prompt.
 
-We tested the retrieval question instead of assuming semantic search always wins. The 145-document synthetic corpus contains 24 primary incident records and 121 distractors. In one 40-case structured-answer run with local `qwen3:4b-instruct`, the single-query semantic arm passed **30/40** and the keyword arm **27/40** under the same v4.5 rubric and source budget. Those totals include State-only questions that cannot show retrieval value; one repetition cannot measure variance. A separate faceted semantic run also passed **30/40** and delivered **11/12** predeclared originals across nine evidence cases, versus **9/12** in the earlier single-query semantic run. The runs were not contemporaneous, and source recall is not answer correctness.
+| Reasoning model | KB Search recorded PASS | Local keyword recorded PASS |
+| --- | ---: | ---: |
+| OpenAI GPT-6 Sol | 37/40 | 32/40 |
+| Local Qwen 4B | 30/40 | 27/40 |
 
-The hardest multi-source case illustrates the boundary: faceted retrieval delivered all four required originals, but the local answer model still chose the wrong structured conclusion. Conversely, in a frozen-evidence diagnostic using a stronger API model, keyword retrieval supplied all four originals for that case while the earlier single-query semantic packet omitted two. A stronger model cannot repair missing evidence, and finding the right evidence does not guarantee a correct inference. These results are from one synthetic incident, not a general claim that embeddings outperform keywords, nor a measured accuracy rate for arbitrary live questions. The current live UI uses an API model and shows a keyword *candidate* comparison, not a second keyword-based answer.
+We then found three evaluator false negatives: answers expressed a time as “10:00 UTC” where the grader expected “10:00”, even though the prompt described a UTC time. A separate offline audit accepted only that equivalent time formatting, giving **38/40 versus 34/40 for OpenAI**. Qwen's totals do not change. There were no new model or retrieval calls. The original run remains preserved, and grading changes are reported separately rather than silently replacing the result.
+
+The hardest synthesis case helped identify where the system still fails. OpenAI with KB context returned all required facts and the qualified conclusion. Qwen with the same KB context returned the four required facts but chose `unknown` in its decision field. The raw keyword packet lacked several essential facts. That separates missing context from an inconsistent structured answer; they need different fixes.
+
+This is promising evidence for the concept, not a general superiority claim. The KB supplied roughly four times as many input tokens. Five generated entries and five raw documents are not equivalent evidence budgets. Seven questions received the same application State in both arms, and the suite includes factual and keyword-explicit questions, not only open-ended ones. There was one repetition of one synthetic incident. Qwen also had four KB answers hit the output-token limit. Semantic support still needs human review.
+
+The experiment changed our design thinking: the right context can help a model investigate, but retrieval, answer quality, output-contract compliance and evaluation quality must be checked separately.
+
+The repository documents [the frozen comparison](https://github.com/mateustalles/trama-sanity-investigation-demo/blob/main/docs/experiments/sanity-kb-search-model-comparison.md), [the narrow grading correction](https://github.com/mateustalles/trama-sanity-investigation-demo/blob/main/docs/experiments/kb-search-grading-audit.md) and [the offline test harness](https://github.com/mateustalles/trama-sanity-investigation-demo/blob/main/docs/testing.md). Mock tests validate safeguards without paid provider calls; they do not certify that a live AI answer is true.
 
 ## Sanity Project Details
 
 - **Project ID:** `swuqfubs`.
-- **Experimental dataset:** `trama-evidence-pilot` (private; synthetic records only).
-- **Schema:** `evidenceSource`, with original text and source identity/provenance fields, plus workspace/case scope.
-- **Endpoint:** a fixed-scope Sanity Context MCP endpoint with embeddings enabled over the pilot Content Lake dataset; credentials stay server-side. [CONFIRM WHAT ENDPOINT OR DATASET INSPECTION ACCESS THE JUDGES WILL HAVE.]
-
-No personal Trama data is in this challenge corpus. The current pilot endpoint has a fixed fictional scope; it is **not** a general multi-tenant authorization design. A real-user version would need per-user authorization, consent, stronger rate limiting, and a separate privacy review.
+- **Dataset:** `trama-evidence-pilot`, private and synthetic.
+- **Schema:** `evidenceSource`, preserving original bodies, identity and scope.
+- **Knowledge Base:** `kbkpWkNaMVN6`, built from the pilot archive.
+- **Access:** Sanity credentials remain server-side. The restricted demo does not expose personal Tramas or operational write APIs.
 
 ## Agent Session
 
-[OPTIONAL: ADD A CURATED, PUBLIC AGENT SESSION EMBED OR LINK. The [challenge guidance](https://dev.to/devteam/join-the-sanity-challenge-2500-in-prizes-for-five-winners-514m) encourages this but does not require it. Upload at https://dev.to/agent_sessions/new, make the session public for judges, and review/redact secrets and personal data before publishing.]
+The project was developed interactively with Codex, including failed retrieval approaches, manual rubric feedback and the decision to separate KB context from authoritative State.
 
-<!-- Publish gate, not part of the article: replace all bracketed placeholders; verify repository visibility and judge login; smoke-test the deployed demo and review two answers against their originals; confirm project ID, dataset, endpoint, and public-access policy; optionally add a short walkthrough and curated AI session; publish in English with #sanitychallenge by October 4, 2026 at 11:59 PM PDT. Path Two, if entered, requires a separate post. Do not describe the proposed Delta game as shipped. -->
+No curated public transcript is included yet. I have kept the private development session out of the submission rather than publish credentials, recovery links or personal context with it.
+
+A player-led investigation game is the next, separate delivery: players will formulate their own hypotheses and build a timeline of Deltas. It is not a shipped feature of this agent.
+
+<!-- Publication gate: complete the signed-in judge walkthrough or record the walkthrough, review the final article, and ensure the GitHub source matches the demo. Do not publish credentials. Path Two requires a separate post and a working game, not a promised feature. -->

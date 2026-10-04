@@ -1,4 +1,4 @@
-type Account = { app_metadata?: Record<string, unknown> };
+type Account = { id?: string; app_metadata?: Record<string, unknown> };
 export const judgeDemoPath = "/poc/sanity/investigate";
 export function isDemoJudge(user: Account | null) {
   return user?.app_metadata?.trama_access === "sanity_demo_judge";
@@ -7,6 +7,14 @@ export function demoJudgeExpired(user: Account, now = Date.now()) {
   const expiry = user.app_metadata?.sanity_demo_expires_at;
   const timestamp = typeof expiry === "string" ? Date.parse(expiry) : NaN;
   return !Number.isFinite(timestamp) || timestamp <= now;
+}
+const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+/** Optional public-host gate. The caller must still establish a trusted Supabase session. */
+export function demoAccountAllowed(user: Account | null, options: {requireJudge: boolean; operatorId?: string | undefined; now?: number}) {
+  if (!options.requireJudge) return true;
+  if (!user) return false;
+  if (isDemoJudge(user)) return !demoJudgeExpired(user, options.now);
+  return Boolean(options.operatorId && uuidPattern.test(options.operatorId) && user.id === options.operatorId);
 }
 export function accountHome(user: Account | null) {
   return isDemoJudge(user) ? judgeDemoPath : "/";

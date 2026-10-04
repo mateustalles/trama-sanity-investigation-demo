@@ -1,9 +1,14 @@
 # The Checkout Investigation — Trama × Sanity
 
 A read-only investigation agent demo. Explore a fictional
-checkout incident, ask your own questions, and inspect the original records
+checkout incident, ask your own questions, and inspect the generated KB context
 behind the answer. The current research corpus contains 145 synthetic records;
 this is a recorded pilot count, not a live count displayed by the application.
+
+[Open the hosted demo](https://trama.beautyqueenz.com/poc/sanity/investigate).
+Sign in using approved test access. The paid investigation endpoint accepts
+only the restricted judge role or the server-designated demo operator, not
+arbitrary Supabase accounts. Passwords are not published in this repository.
 
 ## The case
 
@@ -21,24 +26,50 @@ Try questions such as:
 - What evidence supports or weakens alternative explanations?
 
 Use the page's suggested prompts as starting points, then ask follow-ups in
-your own words. Read the originals before accepting a conclusion. A plausible
-answer is not proof of root cause.
+your own words. Each question retrieves context independently; the demo is not
+a persistent conversation or an evolving State. KB context points back to
+source records, but the UI does not fetch or verify those originals. Inspect
+them separately before a consequential conclusion. A plausible answer is not
+proof of root cause.
 
 ## What Sanity does
 
-The host queries a **Sanity Context MCP endpoint in GROQ mode with embeddings**.
-It searches the question and, when useful, model-planned semantic facets.
-The model does not write arbitrary GROQ: the host controls the query templates
-and fixes the synthetic Workspace and case scope. Selected source IDs are used
-to fetch exact Content Lake originals. At most ten originals and 12,000 source
-characters reach the answer stage.
+The demo reads the existing pilot Knowledge Base through a **Sanity Context
+MCP endpoint**, using the native `knowledge_base_search` tool with
+`return: "entries"` and `limit: 5`. It forwards the complete generated context
+to OpenAI `gpt-6-sol` without host reranking, source filtering, text truncation,
+a GROQ read of originals or a keyword fallback. One generated entry may
+reference several original documents.
 
-The answer model is currently `gpt-6-sol` through the OpenAI Responses API.
-The page exposes original bodies, source identifiers, hashes, omissions,
-retrieval traces, and uncertainty. A keyword candidate comparison is also
-shown; it is not a second answer or a general accuracy claim. Source integrity
-checks do not establish that every cited statement is semantically supported.
-The current demo does not answer from generated Knowledge Base summaries.
+The native tool describes keyword/BM25 search over built KB content, not
+embedding similarity. Suggested prompts use predefined search terms; a
+free-form question is used verbatim as the native query. The UI exposes that
+query and its complete response so the behavior is inspectable.
+
+Only exact matches to the six suggested questions use their declared query.
+Editing a suggestion or typing a new question switches to the verbatim path.
+There is no query-planning model or automatic semantic keyword extraction in
+this delivery. Open-ended reasoning and embedding-based retrieval are different
+capabilities; this demo uses the former over native KB search results.
+
+The page shows the answer, conclusion, limitations, generated KB context,
+tool arguments, usage and latency. Source references in a generated entry are
+not independently verified original documents or proof of claim support.
+For consequential conclusions, inspect the originals. The separate historical
+GROQ/embeddings implementation is retained for research, not called by this demo.
+
+## Record the walkthrough
+
+Use a real running instance and keep the Sanity query and complete returned
+context visible. Introduce the fictional incident, ask what changed, challenge
+the explanation and ask what remains uncertain. Show actual loading and error
+states; do not splice a benchmark answer into the live interface.
+
+A short video is the primary presentation asset; the restricted hosted app is
+an additional way to explore. Do not film environment files, API headers,
+Supabase recovery links or private login credentials. The
+[delivery checklist](delivery-one-checklist.md) contains the three-minute outline
+and the publication gates.
 
 ## Run locally
 
@@ -57,13 +88,15 @@ Edit `.env.local` privately. For a local-only walkthrough, set:
 TRAMA_HOSTED_TENANCY_READY=false
 SANITY_ORGANIZATION_TOKEN=<server-side Context token>
 OPENAI_API_KEY=<server-side OpenAI key>
-SANITY_CONTEXT_PILOT_GROQ_MCP_URL=<authorized Context GROQ MCP endpoint>
+SANITY_CONTEXT_EVIDENCE_MCP_URL=<authorized Context MCP endpoint>
 ```
 
-The endpoint must expose the demo's `evidenceSource` schema and synthetic scope
-(`workspaceId=synthetic-benchmark`,
-`scopeId=payment-incident-2026-09-18`), with embeddings ready. An unrelated
-endpoint is not a drop-in replacement. See
+The endpoint must authorize the isolated ready KB `kbkpWkNaMVN6`; the server
+fixes KB mode and the KB identifier. It must contain only the reviewed synthetic
+pilot archive. This is not a general-purpose KB picker or tenant authorization
+design. An unrelated endpoint is not a drop-in replacement. The original
+Content Lake archive uses `workspaceId=synthetic-benchmark` and
+`scopeId=payment-incident-2026-09-18`. See
 [the pilot schema and ingestion notes](../experiments/sanity-content-lake-evidence-pilot.md).
 Historical ingestion scripts target the original experimental project and some
 expect external corpus files: do not run them blindly against another project.
@@ -79,7 +112,7 @@ file without copying them into the repository. Local development allows this
 demo without sign-in; it is **not** suitable for public exposure.
 
 Questions are sent to Sanity and OpenAI. Do not submit personal or confidential
-data. Each investigation may make several paid model/retrieval calls.
+data. A nonempty context result is followed by a paid answer-model call.
 
 ## Hosted access for judges
 
@@ -87,6 +120,11 @@ Deploy a stable HTTPS build with Supabase Auth, operational tenancy migrations,
 and `TRAMA_HOSTED_TENANCY_READY=true`. Follow
 [the hosted setup guide](../hosted-beta-setup.md). Secrets belong in the hosting
 provider's server environment, never in `NEXT_PUBLIC_` variables.
+
+The live deployment also sets `TRAMA_DEMO_REQUIRE_JUDGE=true` and a server-owned
+`TRAMA_DEMO_OPERATOR_ID` for the approved operator. These are admission controls,
+not browser-selectable roles. See [VPS hosting](vps-hosting.md) for the current
+production arrangement and verification boundaries.
 
 The restricted judge role uses server-owned `trama_access=sanity_demo_judge`
 metadata, expires after 14 days, and permits only authentication and demo
@@ -137,6 +175,10 @@ Live smoke testing consumes provider quota. Historic benchmark run artifacts
 and local logs are intentionally excluded from Git. Research notes describe
 selected synthetic comparisons, not guaranteed performance on arbitrary data.
 The player-led Delta game remains a separate concept, not a feature of this demo.
+Use [the delivery checklist](delivery-one-checklist.md) to prepare the Path One
+post and walkthrough. A temporary tunnel is a testing URL and only stays alive
+while its server and tunnel processes are running; do not describe it as stable
+production hosting.
 
 ## MVP scope
 

@@ -1,28 +1,16 @@
 'use client'
 
 import {useEffect,useRef,useState,type FormEvent} from 'react'
-import type {DemoResult} from '../../../../../../scripts/sanity-demo-agent.mjs'
+import type {NativeDemoResult} from '../../../../../../scripts/sanity-kb-native-demo.mjs'
+import {advancedQuestions,suggestedQuestions} from '../../../../../../scripts/sanity-demo-prompts.mjs'
 import styles from './investigation-demo.module.css'
 import {signOut} from '../../../login/actions'
 
-const suggestedQuestions = [
-  {id:'timeline',label:'Establish the timeline',description:'Start with the event itself, before looking for a cause.',question:'What happened to checkout payments between 10:00 and 10:15 UTC on September 18, 2026?'},
-  {id:'change',label:'Look for a change',description:'Find records from just before the failures began.',question:'What changed in checkout shortly before the September 18 payment failures began?'},
-  {id:'observations',label:'Check a measurement',description:'Inspect an observation that overlaps the failure window.',question:'What did the Provider A latency observation record during the 10:00–10:15 UTC checkout failure window?'},
-  {id:'alternatives',label:'Test alternatives',description:'Compare two competing explanations with their original records.',question:'What do the original postal-code and fraud audit records say about alternative explanations for the September 18 payment failures?'},
-] as const
-
-const advancedQuestions = [
-  {id:'synthesis',label:'Synthesize four evidence threads',question:'Compare the release timeout change, Provider A latency, and the postal/fraud counterevidence. What mechanism is best supported, what remains unproven, and which original records support each part?'},
-  {id:'separation',label:'Spot a misleading look-alike',question:'A Provider A maintenance report from July uses the same vendor name. Should it influence this September incident?'},
-] as const
-
-function shortId(value: string) { return value.length > 28 ? `${value.slice(0,27)}…` : value }
 function seconds(value: number) { return `${(value / 1000).toFixed(1)} s` }
 
 export function InvestigationDemo({signedIn=false}: {signedIn?: boolean}) {
   const [question,setQuestion] = useState('')
-  const [result,setResult] = useState<DemoResult | null>(null)
+  const [result,setResult] = useState<NativeDemoResult | null>(null)
   const [pending,setPending] = useState(false)
   const [error,setError] = useState<string | null>(null)
   const resultRef = useRef<HTMLDivElement>(null)
@@ -45,7 +33,7 @@ export function InvestigationDemo({signedIn=false}: {signedIn?: boolean}) {
       const response = await fetch('/api/poc/sanity/investigate',{
         method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question}),cache:'no-store',
       })
-      const payload = await response.json() as DemoResult & {error?: string}
+      const payload = await response.json() as NativeDemoResult & {error?: string}
       if (!response.ok) throw new Error(payload.error ?? 'The investigation could not be completed.')
       setResult(payload)
     } catch (cause) { setError(cause instanceof Error ? cause.message : 'The investigation failed.') }
@@ -63,11 +51,11 @@ export function InvestigationDemo({signedIn=false}: {signedIn?: boolean}) {
       <header className={styles.hero}>
         <div><p className={styles.eyebrow}>An investigation, not a ready-made verdict</p>
           <h1>Find the evidence. Test the story.</h1>
-          <p>Trama helps people reason through messy, evolving problems. Sanity Context acts as its evidence librarian: it finds potentially relevant records in a noisy archive. Trama reads the exact originals before explaining what is observed, what is inferred, and what is still unknown.</p>
+          <p>Trama helps people reason through messy, evolving problems. Sanity Context searches a Knowledge Base built from a noisy archive. The agent reads the returned entries in full, then explains what they suggest and what remains uncertain. Generated entries are a guide, not verified original evidence.</p>
         </div>
         <div className={styles.heroCard} aria-label="How this agent works">
-          <span>01 <b>Search</b> with Context MCP</span>
-          <span>02 <b>Verify</b> original records</span>
+          <span>01 <b>Search</b> the Knowledge Base</span>
+          <span>02 <b>Read</b> its full response</span>
           <span>03 <b>Reason</b> without changing State</span>
         </div>
       </header>
@@ -80,12 +68,12 @@ export function InvestigationDemo({signedIn=false}: {signedIn?: boolean}) {
           <div><span>YOUR TASK / 02</span><strong>Challenge explanations</strong><p>Compare direct observations with counterevidence and look-alike events.</p></div>
           <div><span>YOUR TASK / 03</span><strong>Qualify the conclusion</strong><p>Separate a plausible mechanism from a proven root cause.</p></div>
         </div>
-        <p className={styles.scopeNote}><strong>In scope:</strong> this fictional September checkout incident and the records in its 145-document pilot archive. <strong>Out of scope:</strong> real customers, unrelated Tramas, and changing the current Case State. The assistant can investigate; it cannot apply a Delta here.</p>
+        <p className={styles.scopeNote}><strong>In scope:</strong> this fictional September checkout incident and its Knowledge Base, built from 145 synthetic source documents. Not every source was retained in generated entries. <strong>Out of scope:</strong> real customers, unrelated Tramas, and changing the current Case State. The assistant cannot apply a Delta here.</p>
       </section>
 
       <section className={styles.workspace} aria-labelledby="ask-heading">
-        <div className={styles.sectionHead}><div><p className={styles.eyebrow}>01 / Begin investigating</p><h2 id="ask-heading">What would you ask first?</h2></div><span className={styles.badge}>145 synthetic records</span></div>
-        <p className={styles.workspaceIntro}>Choose a starting question or write your own. These prompts point to lines of inquiry, not to the answer.</p>
+        <div className={styles.sectionHead}><div><p className={styles.eyebrow}>01 / Begin investigating</p><h2 id="ask-heading">What would you ask first?</h2></div><span className={styles.badge}>Native KB search</span></div>
+        <p className={styles.workspaceIntro}>Choose a starting question or write your own. Starting questions use prewritten keyword queries; free-form questions are sent verbatim to the Knowledge Base keyword search. The exact query is shown with the result.</p>
         <div className={styles.examples} aria-label="Suggested investigation questions">
           {suggestedQuestions.map(suggestion => <button key={suggestion.id} type="button" className={question === suggestion.question ? styles.exampleActive : styles.example}
             onClick={() => chooseQuestion(suggestion.question)} aria-pressed={question === suggestion.question} disabled={pending}>
@@ -97,51 +85,44 @@ export function InvestigationDemo({signedIn=false}: {signedIn?: boolean}) {
           <div>{advancedQuestions.map(item => <button key={item.id} type="button" onClick={() => chooseQuestion(item.question)} disabled={pending}>{item.label} →</button>)}</div>
         </details>
         <form onSubmit={investigate} className={styles.form}>
-          <label htmlFor="investigation-question">Your question to the archive</label>
+          <label htmlFor="investigation-question">Your question to the Knowledge Base</label>
           <textarea id="investigation-question" value={question} onChange={event => setQuestion(event.target.value)} placeholder="What happened during the checkout incident?" minLength={12} maxLength={600} rows={4} required disabled={pending} />
           <div className={styles.formFoot}><p>Ask about the fictional pilot only. Do not include personal, customer, or confidential data: your question is sent to Sanity Context and OpenAI. Answers are experimental and never change the case.</p>
             <button type="submit" disabled={pending || question.trim().length < 12}>{pending ? 'Investigating…' : 'Investigate live →'}</button></div>
         </form>
-        {pending && <p className={styles.pending} role="status">Searching with Context MCP, verifying original records, and preparing an answer. This may take a few seconds.</p>}
+        {pending && <p className={styles.pending} role="status">Searching Knowledge Base entries and preparing an answer from the full response. This may take a few seconds.</p>}
         {error && <p className={styles.error} role="alert">{error}</p>}
       </section>
 
       {result && <div className={styles.results} aria-live="polite" ref={resultRef}>
         <section className={styles.answerPanel} aria-labelledby="answer-heading">
-          <div className={styles.sectionHead}><div><p className={styles.eyebrow}>02 / Evidence-based answer</p><h2 id="answer-heading">What the records support</h2></div><span className={styles.badge}>{seconds(result.trace.totalLatencyMs)}</span></div>
+          <div className={styles.sectionHead}><div><p className={styles.eyebrow}>02 / Qualified answer</p><h2 id="answer-heading">What the Knowledge Base suggests</h2></div><span className={styles.badge}>{seconds(result.trace.totalLatencyMs)}</span></div>
           <p className={styles.answeredQuestion}><strong>Question answered</strong><span>{result.question}</span></p>
           <p className={styles.conclusion}>{result.answer.conclusion}</p>
           <p className={styles.answer}>{result.answer.answer}</p>
-          <div className={styles.limit}><strong>What remains uncertain</strong><p>{result.answer.limitations || 'No additional limitation was supplied by the model; inspect the original records before acting.'}</p></div>
-          <p className={styles.disclaimer}>Experimental answer. Cited source names were checked against the originals delivered to the model; a person must still audit whether every claim is supported.</p>
+          <div className={styles.limit}><strong>What remains uncertain</strong><p>{result.answer.limitations}</p></div>
+          {result.answer.entryRefs.length > 0 && <p className={styles.entryRefs}><strong>KB navigation references:</strong> {result.answer.entryRefs.join(' · ')}</p>}
+          <p className={styles.disclaimer}>Experimental answer from generated KB entries. This path does not reread or verify original documents. Entry references are navigation hints, not original-source citations; check source support before acting.</p>
         </section>
 
         <section className={styles.evidencePanel} aria-labelledby="evidence-heading">
-          <div className={styles.sectionHead}><div><p className={styles.eyebrow}>03 / Provenance</p><h2 id="evidence-heading">Original records the agent read</h2></div><span className={styles.badge}>{result.sources.length} read</span></div>
-          {result.sources.length === 0 && <p className={styles.empty}>No verified original entered the answer.</p>}
-          <div className={styles.sources}>{result.sources.map(source => <article className={styles.source} key={source.id}>
-            <div className={styles.sourceTop}><div><h3>{source.sourceId}</h3><p>{source.title}</p></div><span className={source.claimedByAnswer ? styles.cited : styles.unused}>{source.claimedByAnswer ? 'cited' : 'read'}</span></div>
-            <div className={styles.meta}><span>rev. {shortId(source.revision)}</span><span>SHA-256 {shortId(source.contentHash)}</span>{source.sourceTimestamp && <span>{source.sourceTimestamp}</span>}</div>
-            <details><summary>Read the original record</summary><pre>{source.body}</pre><small>ID: {source.id}</small></details>
-          </article>)}</div>
+          <div className={styles.sectionHead}><div><p className={styles.eyebrow}>03 / Returned context</p><h2 id="evidence-heading">Complete Knowledge Base response</h2></div><span className={styles.badge}>Unmodified text</span></div>
+          <p className={styles.contextNote}>This is the entire text returned by <code>knowledge_base_search</code> and passed to the answer model. It may contain Sanity-generated interpretation and source references; neither is an independently verified original in this demo.</p>
+          <pre className={styles.kbResponse}>{result.search.text}</pre>
         </section>
 
         <section className={styles.tracePanel} aria-labelledby="trace-heading">
-          <div className={styles.sectionHead}><div><p className={styles.eyebrow}>04 / How it found them</p><h2 id="trace-heading">Retrieval trace</h2></div><span className={styles.badge}>{result.trace.calls.length} MCP reads</span></div>
+          <div className={styles.sectionHead}><div><p className={styles.eyebrow}>04 / How it found them</p><h2 id="trace-heading">One native MCP search</h2></div><span className={styles.badge}>{result.model}</span></div>
           <div className={styles.traceGrid}>
-            <div><strong>Search plan</strong><p>{result.trace.facets.length ? result.trace.facets.join(' · ') : 'Whole question — a valid facet plan was not needed or available.'}</p></div>
-            <div><strong>Strategy</strong><p>{result.trace.strategy === 'whole-question' ? 'Whole-question search' : 'Independent facets + baseline candidates'}</p></div>
-            <div><strong>Final packet</strong><p>{result.trace.selectedIds.length} originals within 12,000 characters; {result.trace.omittedIds.length} omitted by the budget.</p></div>
-            <div><strong>Keyword comparison</strong><p>{result.trace.keywordCandidates.length} keyword candidates; no second answer was generated.</p></div>
+            <div><strong>Query mode</strong><p>{result.trace.queryMode === 'curated-keywords' ? 'Prewritten keywords for this starting question' : 'Your question, unchanged'}</p></div>
+            <div><strong>KB search query</strong><p>{result.search.arguments.query}</p></div>
+            <div><strong>Tool arguments</strong><p><code>{JSON.stringify(result.search.arguments)}</code></p></div>
+            <div><strong>Time and tokens</strong><p>KB search {seconds(result.trace.searchLatencyMs)} · answer model {seconds(result.trace.modelLatencyMs)}. {result.trace.modelUsage ? `${result.trace.modelUsage.inputTokens} input / ${result.trace.modelUsage.outputTokens} output tokens.` : 'Token usage unavailable.'}</p></div>
           </div>
-          {(result.trace.missingIds.length > 0 || result.trace.plannerWarning || result.trace.selectorWarning) && <p className={styles.warning}>Gaps: {result.trace.missingIds.length} originals missing. {result.trace.plannerWarning} {result.trace.selectorWarning}</p>}
-          <details className={styles.technical}><summary>Inspect queries and candidates</summary>
-            <div className={styles.techColumns}><div><h3>Sanity Context MCP</h3>{result.trace.calls.map((call,index) => <article key={`${call.kind}-${index}`}><strong>{call.kind}{call.facet ? ` · ${call.facet}` : ''}</strong><span>{call.returned} results · {seconds(call.latencyMs)}</span><code>{call.query}</code></article>)}</div>
-              <div><h3>Keyword candidates</h3><ol>{result.trace.keywordCandidates.map(item => <li key={item.id}>{item.sourceId}</li>)}</ol><h3>Selected IDs</h3><ol>{result.trace.selectedIds.map(id => <li key={id}><code>{shortId(id)}</code></li>)}</ol></div></div>
-          </details>
+          <details className={styles.technical}><summary>Inspect the complete MCP response envelope</summary><pre className={styles.rawResponse}>{JSON.stringify(result.search.raw,null,2)}</pre></details>
         </section>
       </div>}
-      <footer className={styles.footer}>Sanity Context locates evidence; Trama checks original records and reasons about uncertainty. This demo does not modify the archive or the Case State.</footer>
+      <footer className={styles.footer}>Sanity Context searches generated Knowledge Base entries; Trama reasons about their limits. This demo does not verify originals or modify the archive or Case State.</footer>
     </div>
   </main>
 }

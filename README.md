@@ -6,32 +6,39 @@ A release goes live. Checkout payments start failing. Was the deployment
 responsible, was a provider slow, or is something else hiding in the records?
 
 **You are the investigator.** Ask your own questions, follow the clues, and
-inspect the original documents before accepting an explanation.
+inspect the Knowledge Base context behind each explanation.
 
-Trama helps connect the evidence. Sanity helps find it in a noisy archive.
-The agent explains what the records support—and what is still unknown.
+Trama helps connect the evidence. Sanity's Knowledge Base helps find relevant
+context in a noisy archive. The agent explains what the records support—and
+what is still unknown.
 
 ## What can I do?
 
 - Start with a short case brief.
 - Ask a question or choose a suggested starting point.
-- Read the answer alongside its original sources.
+- Read the answer alongside the complete Knowledge Base context it used.
 - Follow up, challenge an explanation, and look for missing evidence.
 
 Try: *“What changed shortly before the payment failures began?”*
 Then ask: *“What evidence challenges that explanation?”*
 
-The incident and archive are fictional. This demo is read-only: it cannot
-change your personal data or apply an investigation decision.
+The incident and archive are fictional. Knowledge Base entries are generated
+summaries with source references, not independently verified originals. This
+demo is read-only: it cannot change your personal data or apply an investigation
+decision.
 
 ## Try it
 
-[Get the demo running](docs/demo/README.md) ·
-[Read the project story](docs/experiments/sanity-challenge-writeup.md)
+[Open the hosted demo](https://trama.beautyqueenz.com/poc/sanity/investigate) ·
+[Run it locally](docs/demo/README.md) ·
+[Read the project story](docs/experiments/sanity-challenge-writeup.md) ·
+[Walkthrough and submission checklist](docs/demo/delivery-one-checklist.md)
 
-This repository contains the app, not a publicly hosted service. Running it
-requires authorized server-side credentials and access to the pilot archive.
-The setup guide explains the requirements; cloning alone does not grant access.
+The hosted demo requires approved test access; ordinary accounts cannot use
+the paid endpoint. Reviewers should use the restricted credentials supplied for
+review, or contact the author for access. A recorded walkthrough is also being
+prepared. Running your own instance requires authorized server-side credentials
+and access to the pilot archive; cloning alone does not grant that access.
 
 ## How do we know it works?
 

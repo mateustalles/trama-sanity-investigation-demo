@@ -1,88 +1,120 @@
-# Demo 1 readiness — source-grounded investigation agent
+# Demo 1 readiness
 
-Status: local prototype, 29 September 2026. This is the **first delivery**;
-the player-led Delta timeline and mind map belong to the separate game concept
-in `sanity-investigation-game-v2.md`.
+Status on October 4, 2026: native Knowledge Base demo deployed with verified
+HTTPS, anonymous-access boundaries and a signed-in restricted-judge HTTP
+walkthrough. Password-based browser sign-in and the recorded video remain
+pending. This is the first
+delivery, a read-only investigation agent. The player-led Delta timeline and
+mind map belong to the separate game concept in `sanity-investigation-game-v2.md`.
 
-## Judge access implementation — 29 September
+## Current agent flow
 
-The approved alias account was provisioned with server-owned restricted metadata
-and expires on 13 October 2026. The migration was applied directly by the
-provisioning script; it is checked in but not registered by that script in
-Supabase migration history. Reconcile migration history before a future CLI push.
-No existing account was modified. Its ignored setup file is private, not a
-submission artifact. Password setup and a signed-in HTTP walkthrough remain
-to be completed by the owner before sharing judge access.
+The page introduces a fictional checkout incident, offers four starting
+questions and two advanced questions, and accepts free-form input. The server
+uses the existing ready pilot KB `kbkpWkNaMVN6` through Sanity Context MCP's
+native `knowledge_base_search`, requesting five complete entries. It forwards
+the complete returned text to OpenAI `gpt-6-sol` and shows the answer,
+qualified conclusion, limitations, actual query, tool arguments, context,
+usage and latency.
 
-Validation: 152 tests and workspace typecheck passed. Database checks confirmed
-denied judge Workspace membership, six requests per ten-minute window and the
-60-request total cap, with test usage rolled back. These are not a substitute
-for testing the authenticated browser flow on the final public deployment.
+The native tool describes keyword/BM25 search over built KB content, not
+embedding similarity. Exact suggested-question matches have prewritten query
+terms; any other question goes verbatim. There is no host reranking, source
+filtering, character cap, original-document follow-up or keyword fallback.
+Each question is independent, not a persistent conversation or State update.
 
-## Ready for a local walkthrough
+The displayed entries are generated interpretations, not independently
+verified originals. Source references do not certify claim support. An empty
+or failed search does not trigger an answer-model call. The agent cannot
+approve a Delta, change Trama State or access the personal organizer.
 
-- The English `/poc/sanity/investigate` page gives a fictional incident brief,
-  four starting questions, optional advanced questions, and free-form input.
-- The read-only host fixes the pilot scope. Sanity Context MCP searches
-  candidates, the host verifies exact Content Lake originals, and GPT-6 Sol
-  answers from the bounded original-source packet. The page exposes the
-  answered question, original bodies, provenance, retrieval trace, omissions,
-  and uncertainty. It cannot approve a Delta or mutate Trama State.
-- The previous four-question live smoke and two manually reviewed outputs are
-  recorded in `sanity-live-agent-demo.md`. They are useful walkthrough
-  evidence, not a success-rate estimate for arbitrary questions.
+## Validation completed
 
-## Not yet a shareable judge demo
+On October 4, the current offline validation passed 233 tests: 158 application
+tests and 75 Node script tests. Workspace typecheck and production builds on
+Windows and Linux passed. The Linux deployment uses Node 24.19, pnpm 11.7 and
+Next.js 16.3.5, with one build worker for the small VPS.
 
-The working `127.0.0.1:3001` address is local, not a public URL. When hosted
-authentication is configured, the page requires a signed-in user. The API's
-six-requests-per-identity-per-ten-minutes guard is in memory and is **not** a
-distributed quota or a public-abuse defense. The server requires Sanity and
-OpenAI credentials; visitors must not supply keys in the browser. The
-145-record label reflects the verified pilot round but is not a live corpus
-count. None of these points should be obscured in the write-up or video.
+A live native-query smoke asked “What might explain the checkout failure?”
+through the verbatim free-form path. It forwarded the complete 14,093-character
+KB response and recorded 3,916 input tokens, 295 output tokens and 7.285 seconds
+total latency. This is one checked flow, not a benchmark success rate or proof
+that every free-form query is supported.
 
-The selected access path is a **limited judge test account**. Create a
-dedicated Supabase Auth user through `scripts/provision-sanity-demo-judge.mjs`; do
-not share an owner's password, a personal account, an API key, or a magic-link
-session. The user should receive only its automatically created empty
-Workspace, but server-owned `trama_access=sanity_demo_judge` metadata denies
-access to that Workspace through SQL RLS and application guards. The account
-can only reach authentication pages and the read-only pilot page/API. It expires
-after 14 days and has an atomic database quota of 60 questions total and six
-per ten minutes. Missing quota configuration fails closed. The route's host-fixed
-synthetic scope means that no personal Trama data is needed for this demo.
+The verified public URL is
+https://trama.beautyqueenz.com/poc/sanity/investigate. Its login returns HTTP 200;
+an anonymous investigation request redirects with 307; an unsigned paid API
+request returns 401; and an unrelated operational API returns 403. TLS and
+these boundaries are verified.
 
-Before offering access, deploy a stable HTTPS build with hosted tenancy enabled,
-provision the judge account, set its password through its private recovery link,
-verify the pilot credentials and corpus identity there, and rerun the suggested
-questions while signed in as that user. Do not expose the local development
-server or a tunnel as the substitute for access control. The in-memory limit
-remains a safety backstop for ordinary users; judge quotas are persistent in
-Supabase. The private setup link is saved under ignored `.trama/runtime/` and
-must never be published in the write-up or repository. If interactive access is not ready, publish a
-short recorded walkthrough plus code and be explicit that the live agent
-requires access; whether that meets the contest's submission requirements must
-be checked against the current rules.
+A temporary authenticated session for the existing restricted judge also
+returned page 200, paid native API 200 and operational write API 403. Its curated
+question used the fixed query and forwarded all 13,312 returned characters;
+OpenAI reported 3,701 input and 127 output tokens with 4.480 seconds total
+latency. The session was signed out after testing. No password reset or account
+metadata change was made. The password form and password-based browser sign-in
+remain untested; this HTTP smoke does not certify that handoff.
 
-## Final quality gate
+The completed frozen comparison has 160 answers over 40 cases, two arms and
+two models. Original PASS totals remain OpenAI KB 37/40 versus keyword 32/40,
+and Qwen KB 30/40 versus keyword 27/40. The separate offline UTC grading audit
+promoted exactly three OpenAI answers, giving 38/40 versus 34/40. It made no new
+model or retrieval calls and did not overwrite the original run. See
+[the grading audit](kb-search-grading-audit.md) and
+[the methodology](sanity-kb-search-model-comparison.md).
 
-1. Confirm that only synthetic pilot records are reachable and that tokens
-   stay server-side. Ask visitors not to submit personal or confidential data;
-   their question is sent to Sanity Context and OpenAI.
-2. Recheck the four starting questions and the two advanced paths on the
-   deployment. Record failures and missing or budget-omitted originals rather
-   than substituting a canned answer.
-3. Manually inspect whether each cited original *supports the claim*. The
-   host verifies source identity and rejects invented source names, but it
-   does not prove the semantic correctness of an answer.
-4. Verify hosted sign-in with the limited judge account, its empty Workspace,
-   quota behavior, mobile layout, keyboard access, and a clear failure state
-   on the actual judge-facing URL.
-5. Make the claim narrowly: Sanity Context helps locate evidence in a scoped,
-   noisy archive and exposes provenance. Existing pilot comparisons do **not**
-   establish that semantic retrieval generally outperforms keyword retrieval.
+The two arms supplied different representations and context sizes; KB used
+roughly four times the input tokens. Seven cases had shared application State,
+and one repetition does not measure variance. Manual review is still required
+for semantic support. These results are not a universal retrieval claim.
 
-No game scoring, hidden answer key, persistent player progress, or Delta
-application is part of Demo 1. No production endpoint, dataset, or access
-policy should be changed just to satisfy this readiness checklist.
+## Judge access
+
+The approved dedicated alias account was provisioned on September 29 with
+server-owned restricted metadata and expires on October 13, 2026. No existing
+account was modified. Its password-setup file and any recovery link are private,
+not submission artifacts. Verify password setup and password-based browser
+access before sharing credentials; do not recreate the existing account to
+deploy the app.
+
+Hosted access requires `TRAMA_HOSTED_TENANCY_READY=true`, Supabase Auth and
+the judge quota configuration. Production also sets
+`TRAMA_DEMO_REQUIRE_JUDGE=true` and a server-owned `TRAMA_DEMO_OPERATOR_ID`.
+Only the restricted judge role or the designated operator can use the paid
+investigation endpoint; arbitrary authenticated accounts are not admitted.
+The restricted role allows only authentication
+and read-only demo routes. Database membership and application guards deny
+operational Workspace access. Its persistent atomic quota permits 60 questions
+total and six per ten minutes; missing configuration fails closed. The ordinary
+in-memory route limit remains only a safety backstop, not a distributed quota.
+
+The original judge-access migration was applied directly by its provisioning
+script, not registered by that script in Supabase migration history. Reconcile
+that history before a future CLI migration push; deployment does not justify
+resetting or replacing the database.
+
+## Remaining publication gates
+
+1. Complete password setup, password-based browser sign-in and private
+   credential handoff. The temporary restricted-judge HTTP session verified
+   paid access and denied writes, not the password form or every quota edge.
+2. Inspect a failure or insufficient-context path without substituting a canned
+   answer, and manually review support for the filmed answer.
+3. Inspect the English UI, loading and error states, keyboard access and mobile
+   layout. Keep generated context visibly separate from verified originals.
+4. Record a real three-minute walkthrough without secrets or recovery links.
+   The Path One template accepts a video or a deployed link; use the video as
+   the primary presentation and verified hosted access as a complement.
+5. Sync the validated public source with the deployed version and confirm the
+   repository website field. The description and post have been updated;
+   include project ID `swuqfubs` and safe judge testing instructions. Keep
+   credentials private.
+
+See [the delivery checklist](../demo/delivery-one-checklist.md) for the final
+gates and [the setup guide](../demo/README.md) for operation. Historical
+September GROQ smoke checks in `sanity-live-agent-demo.md` concern the earlier
+original-source route, not proof that the current native demo was exercised.
+
+No game scoring, hidden answer key, persistent player progress or Delta
+application is part of Demo 1. Do not change datasets, build another KB or
+broaden access to personal Tramas to satisfy this checklist.

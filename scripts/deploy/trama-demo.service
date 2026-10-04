@@ -1,0 +1,27 @@
+[Unit]
+Description=Trama read-only Sanity investigation demo
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=trama-demo
+Group=trama-demo
+WorkingDirectory=/opt/trama-demo/current/apps/web
+EnvironmentFile=/etc/trama-demo.env
+ExecStart=/opt/trama-demo/toolchain/node-v24.19.0-linux-x64/bin/node /opt/trama-demo/current/apps/web/node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3000
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillSignal=SIGTERM
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/opt/trama-demo/current/apps/web/.next /var/lib/trama-demo
+MemoryMax=1G
+TasksMax=128
+
+[Install]
+WantedBy=multi-user.target
