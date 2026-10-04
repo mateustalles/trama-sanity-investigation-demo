@@ -1,6 +1,6 @@
-/** This distribution exposes only the read-only investigation MVP. */
+/** This distribution exposes read-only investigation and a browser-local game. */
 export function demoRouteAllowed(path: string, method: string) {
   if (["/login", "/auth/callback", "/set-password"].includes(path)) return true;
-  if (path === "/" || path === "/poc/sanity/investigate") return ["GET", "HEAD"].includes(method);
+  if (["/", "/poc/sanity/investigate", "/poc/sanity/game"].includes(path)) return ["GET", "HEAD"].includes(method);
   return path === "/api/poc/sanity/investigate" && method === "POST";
 }

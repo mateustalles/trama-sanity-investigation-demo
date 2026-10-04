@@ -35,10 +35,22 @@ decision.
 [Walkthrough and submission checklist](docs/demo/delivery-one-checklist.md)
 
 The hosted demo requires approved test access; ordinary accounts cannot use
-the paid endpoint. Reviewers should use the restricted credentials supplied for
-review, or contact the author for access. A recorded walkthrough is also being
-prepared. Running your own instance requires authorized server-side credentials
+the paid endpoint. Contact the author to arrange restricted credentials privately;
+the password handoff is still being finalized. A recorded walkthrough is also
+being prepared. Running your own instance requires authorized server-side credentials
 and access to the pilot archive; cloning alone does not grant that access.
+
+## Build your own investigation
+
+A separate Delta game is being integrated at `/poc/sanity/game`. Build a
+hypothesis, choose evidence, explain your reasoning and preserve each decision
+as a step you can later challenge or branch from. Its triangle connects
+hypothesis, evidence and rationale; it does not score whether you found the truth.
+
+The game stores its notebook in your browser, not in real Trama State. Six
+frozen synthetic source excerpts provide a starting point; optional live
+Sanity retrieval adds clearly labeled generated context. Public game deployment
+is not yet verified. [Game walkthrough and limits](docs/demo/game.md).
 
 ## How do we know it works?
 

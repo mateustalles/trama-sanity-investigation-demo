@@ -18,7 +18,7 @@ Sanity plays the librarian. Its Knowledge Base organizes an archive of synthetic
 
 [Open the live investigation](https://trama.beautyqueenz.com/poc/sanity/investigate).
 
-Sign-in is required to protect the paid model endpoint. Reviewers should use the restricted test credentials supplied for review, or contact me through DEV for access. Ordinary accounts do not grant access to the demo. A short recorded walkthrough is being prepared as an additional presentation of the same real flow.
+Sign-in is required to protect the paid model endpoint. Contact me through DEV to arrange restricted test credentials privately. Ordinary accounts do not grant access to the demo. The restricted-account HTTP flow has been checked, but the password handoff is still being finalized. A short recorded walkthrough is being prepared as an additional presentation of the same real flow.
 
 Start with the case brief, then try:
 
@@ -33,7 +33,7 @@ Each question starts a new read-only retrieval. This version does not persist a 
 
 Generated entries are visibly labeled as generated context, not verified original documents. They contain references to the underlying records, but displaying a reference does not prove that a claim is supported by that original. For consequential decisions, the person should inspect the underlying source.
 
-The demo is read-only. It cannot apply a Delta, approve a hypothesis or change authoritative Trama State. Hosted access uses a dedicated, restricted judge account rather than an owner's login. Credentials are shared privately; API keys never belong in the post or browser. Questions go to Sanity and OpenAI, so visitors should not enter personal or confidential information.
+The demo is read-only. It cannot apply a Delta, approve a hypothesis or change authoritative Trama State. Hosted access uses a dedicated, restricted judge account rather than an owner's login. Credentials must be delivered privately; API keys never belong in the post or browser. Questions go to Sanity and OpenAI, so visitors should not enter personal or confidential information.
 
 ## Code
 

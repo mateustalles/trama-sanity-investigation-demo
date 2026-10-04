@@ -1,6 +1,16 @@
 # Sanity investigation game — second delivery concept
 
-Status: design proposal only; no game mechanics or scoring are deployed.
+This document preserves the earlier design proposal. On October 4, a narrower
+browser-local game is being integrated at `/poc/sanity/game`; its public
+deployment is not yet verified. See [the current game guide](../demo/game.md)
+and [the separate Path Two draft](sanity-challenge-game-writeup.md) for the
+implemented scope. The proposal below is not a list of shipped capabilities.
+
+The current MVP has six immediately available frozen synthetic excerpts,
+optional live native KB generated context, player-owned hypotheses and
+append-only Delta branches. It checks completeness, not correctness. It does
+not use the proposed source-verification retrieval loop, a hidden answer key,
+evidence-coverage scoring or an AI judgment of closeness to a solution.
 
 ## Player premise
 

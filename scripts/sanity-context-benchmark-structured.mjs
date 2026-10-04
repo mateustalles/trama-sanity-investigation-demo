@@ -2,6 +2,17 @@
 // The structured score measures explicit decisions and atomic facts, not prose quality.
 const spec = (choices, correct, fields = {}, extra = {}) => ({choices, correct, fields, ...(extra.action ? {action:extra.action} : {})})
 const field = (hint, expected, type = 'string') => ({hint, expected, type})
+// The output contract is unchanged. This is a host-only grading revision.
+export const structuredScoringRevision = 'v4.6-utc-time'
+const utcTime = (hint, expected) => field(hint, expected, 'utc-time')
+
+function normalizedUtcTime(value) {
+  if (typeof value !== 'string') return null
+  // Only a declared UTC clock field permits this equivalent suffix. Do not
+  // reinterpret offsets, dates, unpadded times, ranges, prose, or other strings.
+  const match = /^([01]\d|2[0-3]):([0-5]\d)(?: UTC)?$/.exec(value.trim())
+  return match ? `${match[1]}:${match[2]}` : null
+}
 
 export const structuredAdditionalCases = [
   {id:'X01',category:'synthesis',prompt:'Compare the release timeout change, Provider A latency, and the postal/fraud counterevidence. What mechanism is best supported, what remains unproven, and which original records support each part?',requiredPaths:['deployment','hypotheses/provider_latency','hypotheses/postal_code_validation','hypotheses/fraud_rules'],concepts:[]},
@@ -9,16 +20,16 @@ export const structuredAdditionalCases = [
 ]
 
 export const structuredSpecs = {
-  R01: spec(['payment_failures','catalog_cache','provider_maintenance','unknown'],'payment_failures',{start_utc:field('Incident start, HH:MM UTC','10:00'),end_utc:field('Incident end, HH:MM UTC','10:15')}),
+  R01: spec(['payment_failures','catalog_cache','provider_maintenance','unknown'],'payment_failures',{start_utc:utcTime('Incident start, HH:MM UTC','10:00'),end_utc:utcTime('Incident end, HH:MM UTC','10:15')}),
   R02: spec(['timeout_reduced','timeout_increased','postal_rule_changed','unknown'],'timeout_reduced',{old_seconds:field('Previous timeout in seconds',10,'number'),new_seconds:field('New timeout in seconds',4,'number')}),
   R03: spec(['latency_increased','latency_decreased','unchanged','unknown'],'latency_increased',{baseline_upper_seconds:field('Upper bound on normal p95 latency, seconds',1.2,'number'),incident_low_seconds:field('Lower end of incident p95 range, seconds',4.8,'number'),incident_high_seconds:field('Upper end of incident p95 range, seconds',7.1,'number')}),
   R04: spec(['directly_reported','inferred_from_records','not_determinable'],'directly_reported',{retry_delay_seconds:field('Delay after initial failure, seconds',30,'number')}),
   R05: spec(['postal_edit_required','no_postal_edit_for_most','unknown'],'no_postal_edit_for_most',{inspected_failures:field('Number of failed payments inspected',40,'number'),later_success_without_edit:field('Number later succeeding without address edit',31,'number')}),
-  R06: spec(['rule_published','no_rule_published','unknown'],'no_rule_published',{audit_start_utc:field('Audit interval start, HH:MM UTC','08:00'),audit_end_utc:field('Audit interval end, HH:MM UTC','12:00')}),
-  R07: spec(['notice_during_incident','notice_before_incident','notice_after_incident','unknown'],'notice_during_incident',{notice_utc:field('Vendor notice time, HH:MM UTC','10:12')}),
+  R06: spec(['rule_published','no_rule_published','unknown'],'no_rule_published',{audit_start_utc:utcTime('Audit interval start, HH:MM UTC','08:00'),audit_end_utc:utcTime('Audit interval end, HH:MM UTC','12:00')}),
+  R07: spec(['notice_during_incident','notice_before_incident','notice_after_incident','unknown'],'notice_during_incident',{notice_utc:utcTime('Vendor notice time, HH:MM UTC','10:12')}),
   R08: spec(['catalog_cache_other_case','provider_a_current_case','fraud_current_case','unknown'],'catalog_cache_other_case'),
   I01: spec(['provider_timeout_strongest','postal_strongest','fraud_strongest','cannot_rank'],'provider_timeout_strongest',{}, {qualifier:'not_confirmed'}),
-  I02: spec(['timeout_latency_interaction','postal_validation','fraud_rule','unknown'],'timeout_latency_interaction',{deploy_utc:field('Deployment time, HH:MM UTC','09:58'),new_timeout_seconds:field('New timeout, seconds',4,'number')},{qualifier:'plausible_not_proven'}),
+  I02: spec(['timeout_latency_interaction','postal_validation','fraud_rule','unknown'],'timeout_latency_interaction',{deploy_utc:utcTime('Deployment time, HH:MM UTC','09:58'),new_timeout_seconds:field('New timeout, seconds',4,'number')},{qualifier:'plausible_not_proven'}),
   I03: spec(['postal_hypothesis_weakened','postal_hypothesis_confirmed','postal_hypothesis_excluded','unknown'],'postal_hypothesis_weakened',{success_without_edit:field('Successes without address edit',31,'number')},{qualifier:'limited_sample'}),
   I04: spec(['fraud_hypothesis_weakened','fraud_hypothesis_confirmed','fraud_hypothesis_excluded','unknown'],'fraud_hypothesis_weakened',{}, {qualifier:'individual_effects_possible'}),
   I05: spec(['provider_caused_all','provider_plausible_not_all_proven','provider_ruled_out','unknown'],'provider_plausible_not_all_proven',{}, {qualifier:'not_confirmed'}),
@@ -29,7 +40,7 @@ export const structuredSpecs = {
   I10: spec(['postal_general_regression_supported','postal_general_regression_weakened','postal_all_cases_excluded','unknown'],'postal_general_regression_weakened',{success_without_edit:field('Successes without address edit',31,'number')},{qualifier:'limited_sample'}),
   T01: spec(['include_as_causal_evidence','exclude_other_event','insufficient_information'],'exclude_other_event'),
   T02: spec(['include_as_causal_evidence','exclude_other_event','insufficient_information'],'exclude_other_event'),
-  T03: spec(['include_in_incident_window','separate_later_event','insufficient_information'],'separate_later_event',{other_event_utc:field('Provider C event time, HH:MM UTC','11:00')}),
+  T03: spec(['include_in_incident_window','separate_later_event','insufficient_information'],'separate_later_event',{other_event_utc:utcTime('Provider C event time, HH:MM UTC','11:00')}),
   T04: spec(['include_as_causal_evidence','exclude_other_case','insufficient_information'],'exclude_other_case'),
   T05: spec(['proposal_caused_event','proposal_cannot_cause_earlier_event','insufficient_information'],'proposal_cannot_cause_earlier_event'),
   T06: spec(['june_migration_proves_september_regression','june_migration_does_not_prove_it','insufficient_information'],'june_migration_does_not_prove_it'),
@@ -59,7 +70,7 @@ export function assertStructuredSpecs(cases) {
   for (const testCase of cases) {
     const item = structuredSpecs[testCase.id]
     if (!item || !item.choices.includes(item.correct) || item.choices.length < 3 || item.choices.length > 5 || new Set(item.choices).size !== item.choices.length) throw Error(`Invalid structured choices for ${testCase.id}`)
-    for (const [name, value] of Object.entries(item.fields)) if (!name || !['number','string'].includes(value.type)) throw Error(`Invalid structured field for ${testCase.id}`)
+    for (const [name, value] of Object.entries(item.fields)) if (!name || !['number','string','utc-time'].includes(value.type) || value.type === 'utc-time' && normalizedUtcTime(value.expected) !== value.expected) throw Error(`Invalid structured field for ${testCase.id}`)
   }
 }
 
@@ -81,15 +92,16 @@ export function scoreStructured(testCase, raw, {selectedSources = [], selectedId
   const item = structuredSpecs[testCase.id]
   if (!item) throw Error(`No structured spec for ${testCase.id}`)
   const parsed = parseStructuredOutput(raw)
-  if (parsed.error) return {kind:'structured-v4',scoringRevision:'v4.5',answerPass:false,strictPass:false,decisionPass:false,factsPass:false,formatPass:false,evidencePass:false,explanationPass:false,error:parsed.error,output:null}
+  if (parsed.error) return {kind:'structured-v4',scoringRevision:structuredScoringRevision,answerPass:false,strictPass:false,decisionPass:false,factsPass:false,formatPass:false,evidencePass:false,explanationPass:false,error:parsed.error,output:null}
   const value = parsed.value
   const formatPass = typeof value.answer === 'string' && value.answer.trim().length > 0 && item.choices.includes(value.decision) && value.facts && typeof value.facts === 'object' && !Array.isArray(value.facts) && (value.evidence === undefined || Array.isArray(value.evidence) && value.evidence.every(source => typeof source === 'string')) && (!item.action || actionChoices.includes(value.action))
   const decisionPass = value.decision === item.correct && (!item.action || value.action === item.action)
   const factResults = Object.fromEntries(Object.entries(item.fields).map(([name, expected]) => {
     const actual = value.facts?.[name]
     const numeric = typeof actual === 'number' ? actual : typeof actual === 'string' && /^[+-]?(?:\d+\.?\d*|\.\d+)$/.test(actual.trim()) ? Number(actual.trim()) : NaN
-    const pass = expected.type === 'number' ? Number.isFinite(numeric) && numeric === expected.expected : typeof actual === 'string' && actual.trim() === expected.expected
-    return [name,{expected:expected.expected,actual:actual??null,pass}]
+    const normalized = expected.type === 'utc-time' ? normalizedUtcTime(actual) : undefined
+    const pass = expected.type === 'number' ? Number.isFinite(numeric) && numeric === expected.expected : expected.type === 'utc-time' ? normalized !== null && normalized === expected.expected : typeof actual === 'string' && actual.trim() === expected.expected
+    return [name,{expected:expected.expected,actual:actual??null,pass,...(expected.type === 'utc-time' ? {comparison:'utc-clock-exact-optional-UTC-suffix',normalizedActual:normalized} : {})}]
   }))
   const factsPass = Object.values(factResults).every(result => result.pass)
   const answerPass = decisionPass && factsPass
@@ -97,5 +109,5 @@ export function scoreStructured(testCase, raw, {selectedSources = [], selectedId
   const evidence = Array.isArray(value.evidence) ? value.evidence : []
   const evidencePass = evidence.length > 0 && evidence.every(source => allowed.has(source)) && (!testCase.requiresState || evidence.includes('State snapshot'))
   const explanationPass = typeof value.answer === 'string' && value.answer.trim().length >= 24
-  return {kind:'structured-v4',scoringRevision:'v4.5',answerPass,strictPass:answerPass,decisionPass,factsPass,formatPass:Boolean(formatPass),evidencePass,explanationPass,correctDecision:item.correct,decision:value.decision??null,factResults,expectedAction:item.action??null,evidence,output:value}
+  return {kind:'structured-v4',scoringRevision:structuredScoringRevision,answerPass,strictPass:answerPass,decisionPass,factsPass,formatPass:Boolean(formatPass),evidencePass,explanationPass,correctDecision:item.correct,decision:value.decision??null,factResults,expectedAction:item.action??null,actualAction:value.action??null,evidence,output:value}
 }

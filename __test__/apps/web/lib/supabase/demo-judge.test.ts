@@ -19,6 +19,9 @@ describe("limited judge access", () => {
     expect(judgeRouteAllowed("/api/local-chat", "POST")).toBe(false);
     expect(judgeRouteAllowed("/poc/sanity/investigate", "POST")).toBe(false);
     expect(judgeRouteAllowed("/poc/sanity/investigate", "GET")).toBe(true);
+    expect(judgeRouteAllowed("/poc/sanity/game", "GET")).toBe(true);
+    expect(judgeRouteAllowed("/poc/sanity/game", "HEAD")).toBe(true);
+    expect(judgeRouteAllowed("/poc/sanity/game", "POST")).toBe(false);
     expect(judgeRouteAllowed("/api/poc/sanity/investigate", "POST")).toBe(true);
   });
   it("allows only a current judge or the exact configured operator when the public gate is enabled", () => {

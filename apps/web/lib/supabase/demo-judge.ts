@@ -21,6 +21,6 @@ export function accountHome(user: Account | null) {
 }
 export function judgeRouteAllowed(path: string, method: string) {
   if (["/login", "/auth/callback", "/set-password"].includes(path)) return true;
-  if (path === judgeDemoPath) return method === "GET" || method === "HEAD";
+  if (path === judgeDemoPath || path === "/poc/sanity/game") return method === "GET" || method === "HEAD";
   return path === "/api/poc/sanity/investigate" && method === "POST";
 }

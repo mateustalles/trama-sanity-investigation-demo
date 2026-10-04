@@ -14,11 +14,28 @@ and correctly expressed uncertainty.
 
 Passing unit tests is not a model accuracy score.
 
-On October 4, 2026, the current validation passed 158 application tests and
-75 Node script tests (233 total), plus workspace typecheck. Windows and Linux
-production builds also passed. Live smoke and public boundary checks are
+The separate game integration adds deterministic browser-local transition
+fixtures in `__test__/apps/web/app/delta-game.test.ts`: required player fields,
+valid evidence references, close/reopen through a new Delta, retained branch
+history, contesting ancestors versus siblings, generated-context labels and
+rejection of corrupt saved graphs. These fixtures test the model of the game,
+not a player's explanation or a live KB response.
+
+On October 4, 2026, the game integration passed 167 application tests and
+75 Node script tests (242 total), plus workspace typecheck and the local
+production build. The earlier first delivery passed 233 tests and Windows/Linux
+production builds. Live agent smoke and public boundary checks are
 recorded separately in [Demo 1 readiness](experiments/sanity-demo-1-readiness.md);
 none of these substitutes for manual answer review or a signed-in judge flow.
+
+The local production game browser check accepted, concluded, returned,
+branched and contested Deltas, then restored the same D03 head and five events
+after reload. A 375-pixel responsive check found document width 375 pixels.
+Screenshots and precise remaining checks are recorded in
+[the game guide](demo/game.md). Export-download automation timed out and reset
+confirmation automation was blocked; those are not successful end-to-end
+checks. No live provider request through the game browser or public game
+deployment is claimed by this local validation.
 
 ## Offline AI harness
 

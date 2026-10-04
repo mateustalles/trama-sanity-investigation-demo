@@ -45,6 +45,7 @@ export function InvestigationDemo({signedIn=false}: {signedIn?: boolean}) {
       <nav className={styles.nav} aria-label="Demo navigation">
         <a href="/poc/sanity/investigate">Trama × Sanity Context</a><span>·</span><span>Evidence investigation demo</span>
         <span className={styles.navStatus}>Experimental · read-only</span>
+        <a href="/poc/sanity/game">Delta game ↗</a>
         {signedIn && <form action={signOut}><button type="submit">Sign out</button></form>}
       </nav>
 
