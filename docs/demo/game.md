@@ -109,7 +109,7 @@ the open sibling D03 and contested D02 without changing the active D03 branch.
 Reload restored D03 and its five-event history. A 375-pixel viewport had a
 375-pixel document width in the responsive check.
 
-The Linux production build also passed. The active deployment uses source
+The Linux production build also passed. The R3 deployment used source
 commit `e1112cb`. A real restricted-judge HTTP session returned game page 200;
 anonymous access redirected with 307. Game POST and unrelated operational API
 requests returned 403. A call to the shared native investigation API returned
@@ -133,3 +133,9 @@ new inline controls have not yet been verified end-to-end in that browser.
 Password-form testing and private credential
 handoff also remain pending. The separate agent's live results do not
 substitute for those checks.
+
+The final R4 application release uses commit `2740343`, preserving R3 for
+rollback. Its Linux build passed and a new restricted-session route check
+returned game page 200, anonymous redirect 307, and game/operational writes
+403, without another model call. The inline reset controls remain a manual
+browser check; neither release changes authoritative Trama State.
