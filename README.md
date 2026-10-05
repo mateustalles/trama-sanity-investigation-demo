@@ -8,13 +8,15 @@ Conceptual cover art, not a screenshot of the current interface.
 
 - **Path One — Trama Investigator:** ask questions and inspect the Sanity
   Knowledge Base context behind the agent's answers.
-  [Try the Investigator](https://trama.beautyqueenz.com/poc/sanity/investigate).
+  [Try the Investigator](https://www.apptrama.com/poc/sanity/investigate).
 - **Path Two — Delta game:** choose an explanation, connect clues and build a
   history of decisions you can revisit or branch from.
-  [Play Delta](https://trama.beautyqueenz.com/poc/sanity/game).
+  [Play Delta](https://www.apptrama.com/poc/sanity/game).
 
 Both explore the same fictional incident. The Investigator helps you ask what
 happened; the game puts you in charge of what to conclude and why.
+
+The previous demo address, [trama.beautyqueenz.com](https://trama.beautyqueenz.com/poc/sanity/investigate), remains available as an alternative.
 
 ## Find the evidence. Test the story.
 
@@ -45,7 +47,7 @@ decision.
 
 ## Try it
 
-[Open the hosted demo](https://trama.beautyqueenz.com/poc/sanity/investigate) ·
+[Open the hosted demo](https://www.apptrama.com/poc/sanity/investigate) ·
 [Run it locally](docs/demo/README.md) ·
 [Read the project story](docs/experiments/sanity-challenge-writeup.md) ·
 [Walkthrough and submission checklist](docs/demo/delivery-one-checklist.md)
@@ -60,7 +62,7 @@ and access to the pilot archive; cloning alone does not grant that access.
 
 ## Path Two: build your own investigation
 
-[Open the Delta game](https://trama.beautyqueenz.com/poc/sanity/game). Build a
+[Open the Delta game](https://www.apptrama.com/poc/sanity/game). Build a
 hypothesis, choose evidence, explain your reasoning and preserve each decision
 as a step you can later challenge or branch from. Its triangle connects
 hypothesis, evidence and rationale; it does not score whether you found the truth.

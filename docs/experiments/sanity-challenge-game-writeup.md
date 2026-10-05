@@ -20,7 +20,7 @@ This is not a root-cause oracle or a percentage-correct meter. The model assesse
 
 ## Demo
 
-[Play the Delta game](https://trama.beautyqueenz.com/poc/sanity/game).
+[Play the Delta game](https://www.apptrama.com/poc/sanity/game).
 
 Use the [public restricted test login](https://github.com/mateustalles/trama-sanity-investigation-demo/blob/main/docs/demo/test-access.md). It grants demo access, not personal workspaces or provider keys. All visitors share six live actions per minute and 600 accepted requests total. Retrieving clues and requesting a rationale each count once; local decisions and branches are free.
 

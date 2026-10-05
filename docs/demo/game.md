@@ -1,6 +1,6 @@
 # The Delta investigation game
 
-[Open the game](https://trama.beautyqueenz.com/poc/sanity/game) ·
+[Open the game](https://www.apptrama.com/poc/sanity/game) ·
 [Restricted test login](test-access.md)
 
 ## Your challenge

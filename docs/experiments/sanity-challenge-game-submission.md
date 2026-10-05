@@ -20,7 +20,7 @@ There is deliberately no magic correctness percentage. A model's assessment of s
 
 ## Demo
 
-[Play Delta](https://trama.beautyqueenz.com/poc/sanity/game).
+[Play Delta](https://www.apptrama.com/poc/sanity/game).
 
 Public, restricted demo login:
 

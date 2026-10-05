@@ -1,6 +1,6 @@
 # Restricted demo access
 
-[Open the Investigator](https://trama.beautyqueenz.com/poc/sanity/investigate) · [Open the Delta game](https://trama.beautyqueenz.com/poc/sanity/game)
+[Open the Investigator](https://www.apptrama.com/poc/sanity/investigate) · [Open the Delta game](https://www.apptrama.com/poc/sanity/game)
 
 Sign in with the dedicated test account:
 

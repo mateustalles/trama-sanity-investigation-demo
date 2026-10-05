@@ -5,7 +5,7 @@ checkout incident, ask your own questions, and inspect the generated KB context
 behind the answer. The current research corpus contains 145 synthetic records;
 this is a recorded pilot count, not a live count displayed by the application.
 
-[Open the hosted demo](https://trama.beautyqueenz.com/poc/sanity/investigate).
+[Open the hosted demo](https://www.apptrama.com/poc/sanity/investigate).
 Sign in using approved test access. The paid investigation endpoint accepts
 only the restricted judge role or the server-designated demo operator, not
 arbitrary Supabase accounts. The author-approved [restricted test credentials](test-access.md)

@@ -20,7 +20,7 @@ trace and limitations in either presentation.
 - [x] Review and publish `docs/experiments/sanity-challenge-writeup.md` as the Path One post.
 - [x] Include a verified live demo link **or** an embedded recorded walkthrough,
   as allowed by the Path One template. A localhost address is not a public demo.
-  Live URL: https://trama.beautyqueenz.com/poc/sanity/investigate.
+  Live URL: https://www.apptrama.com/poc/sanity/investigate.
 - [x] Link the public GitHub source matching the demonstrated version.
 - [x] Update the repository description to describe the read-only KB agent.
 - [x] Confirm the repository website field points to the verified public URL.
@@ -98,7 +98,7 @@ coverage. Any game progress State is separate from authoritative operational
 Trama State until an explicitly approved persistence design exists.
 
 The separate protected game is now hosted at
-https://trama.beautyqueenz.com/poc/sanity/game. Its feedback is completeness-only,
+https://www.apptrama.com/poc/sanity/game. Its feedback is completeness-only,
 not an evaluation of closeness to a hidden correct answer. Use its own
 [Path Two writeup](../experiments/sanity-challenge-game-writeup.md), not the
 agent's feature or benchmark claims.

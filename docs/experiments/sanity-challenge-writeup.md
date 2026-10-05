@@ -19,7 +19,7 @@ For this submission, I built a focused investigation assistant around a fictiona
 This demo focuses on the retrieval-and-reasoning step. It does not automatically apply decisions or modify investigation records.
 
 ## Demo
-https://trama.beautyqueenz.com/poc/sanity/investigate
+https://www.apptrama.com/poc/sanity/investigate
 (The demo is hosted on my existing domain)
 
 Open the demo and sign in with this restricted test account:

@@ -1,7 +1,11 @@
 # Hosting the investigation demo
 
 The read-only agent is hosted at
-[trama.beautyqueenz.com](https://trama.beautyqueenz.com/poc/sanity/investigate).
+[www.apptrama.com](https://www.apptrama.com/poc/sanity/investigate).
+The previous hostname, `trama.beautyqueenz.com`, remains active. Both hostnames
+serve the same release over HTTPS and use the same restricted demo account.
+Game notebooks are browser-local and do not transfer between hostnames;
+export your notebook before switching if you want to preserve your progress.
 It runs on a dedicated VPS rather than a tunnel to the author's computer.
 The public URL requires approved test access; API keys stay on the server.
 
