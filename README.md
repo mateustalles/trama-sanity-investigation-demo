@@ -61,7 +61,9 @@ an answer. You decide what to accept and can later return, contest or branch.
 Six frozen source excerpts provide a starting point; native KB Search adds
 clearly labeled generated response sections, not verified originals. The
 notebook stays in your browser, not in real Trama State.
-[Game walkthrough and limits](docs/demo/game.md).
+[Game walkthrough and limits](docs/demo/game.md) ·
+[Game source](apps/web/app/poc/sanity/game) ·
+[Path Two submission template](docs/experiments/sanity-challenge-game-submission.md).
 
 ## How do we know it works?
 
