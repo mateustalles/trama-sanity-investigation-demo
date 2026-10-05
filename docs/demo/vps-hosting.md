@@ -87,3 +87,14 @@ The app is read-only with respect to Trama State and personal organizer data,
 but a successful question still spends Sanity and OpenAI quota. Before filming
 or sharing access, review usage, inspect the answer and keep the complete
 generated KB context visibly distinct from independently verified originals.
+
+The guided-game R7 release (`e150674`, October 5 UTC) preserves R5/R6 for
+rollback. It adds exact POST routes for clue retrieval and selected-context
+review while keeping judge restrictions and existing atomic usage. The
+protected environment and account metadata were not changed. Nginx retains
+8 KiB for other routes and allows 256 KiB only under the game's API prefix;
+`nginx -t` passed before reload. The previous Nginx file is backed up separately.
+277 offline tests, typecheck and Linux production build passed. Hosted native
+retrieval, model review, explicit Delta acceptance, branch/contestation/reload,
+JSON export and responsive layout were checked. See [the game guide](game.md)
+for measurements and limitations.

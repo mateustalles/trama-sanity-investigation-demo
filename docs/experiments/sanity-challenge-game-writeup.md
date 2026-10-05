@@ -34,7 +34,11 @@ A quick walkthrough:
 
 The [full game guide](https://github.com/mateustalles/trama-sanity-investigation-demo/blob/main/docs/demo/game.md) explains provenance, quotas, export and reset.
 
-<!-- Add a current guided-game screenshot or recording here after visual verification. Earlier delta-progression.jpg and delta-branches.jpg show the prior free-text prototype, not these new controls. -->
+![A preserved D03 and current D04 with hypothesis alternatives and orbiting selected clues](https://raw.githubusercontent.com/mateustalles/trama-sanity-investigation-demo/main/docs/demo/images/guided-delta-game-r7.jpg)
+
+Actual hosted interface: the earlier Delta stays on the left, while the next one is built through the three orbs.
+
+![A branch map preserves a contested D02 beside the active sibling D03](https://raw.githubusercontent.com/mateustalles/trama-sanity-investigation-demo/main/docs/demo/images/guided-delta-branches-r7.jpg)
 
 ## Code
 
@@ -58,7 +62,9 @@ The deterministic part is the Delta lifecycle. Accepting validates required fiel
 
 Earlier valid notebooks remain readable. Drafts and pending proposals are not saved; accepted rationale and history are. Provider failures preserve selections, and the interface distinguishes search timeout, model timeout and quota cooldown. There are no automatic paid retries.
 
-The implementation passed 277 offline tests—193 Vitest tests and 84 script tests—plus workspace typecheck and a production build. A browser walkthrough selected alternatives and clues, accepted D01, concluded D02, returned to D01 to create D03, contested D02, and restored the active D03 and five events after reload. Provider checks and hosted visual verification are recorded separately in the guide; unit tests are not claims of perfect AI accuracy.
+The implementation passed 277 offline tests—193 Vitest tests and 84 script tests—plus workspace typecheck and Windows/Linux production builds. A local browser walkthrough concluded and reopened branches. The hosted walkthrough retrieved five generated sections, explicitly adopted a model proposal, branched from D01 and contested D02 without deleting either sibling. Reload restored active D03, five events and eleven clues; JSON export was inspected. Mobile inspection found a checkbox layout bug, which was fixed and checked at 375 pixels without horizontal overflow.
+
+A live review of three selected records returned support with causal qualifications in 5.3 seconds. A different selection contradicted the postal-change hypothesis in 3.6 seconds, instead of trying to justify it. These are small behavior checks, not an accuracy benchmark or proof that all model assessments are correct. Complete provenance and deployment checks are recorded in the guide.
 
 The game remains a small browser-local reasoning prototype. Six frozen synthetic excerpts are visible from the start, so it is not a strict hidden-clue puzzle. There is no audited win condition, multi-user synchronization, Sanity App SDK or Workflows integration. A complete Delta can still be wrong, and generated evidence can mislead.
 

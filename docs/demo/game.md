@@ -43,6 +43,13 @@ A concluded branch can reopen through another Delta. A complete Delta can
 still be wrong: field validation checks completeness, while AI review checks
 support in the selected material, not the truth of the entire archive.
 
+![Hosted guided board: a preserved D03 and a new D04 with selectable orbs](images/guided-delta-game-r7.jpg)
+
+Hosted R7 capture: hypothesis alternatives, selected orbiting clues and the
+optional rationale action. These are actual controls, not conceptual artwork.
+
+![Hosted branch map preserves contested D02 beside active D03](images/guided-delta-branches-r7.jpg)
+
 ## What Sanity actually returns
 
 The native route uses the existing `kbkpWkNaMVN6` KB, `return: entries`,
@@ -114,6 +121,18 @@ empty until explicitly adopted. The player then accepted D01 and opened D02.
 Anonymous game access redirected (307), unsigned review returned 401 and an
 operational write returned 403. No dataset, KB or operational State changed.
 
+R7 (`e150674`) fixed inherited full-width checkbox styles. The hosted
+375-pixel viewport then had a 360-pixel document width, with no horizontal
+overflow. The hosted walkthrough also branched from D01, contested sibling
+D02 and restored active D03 with five events and eleven notebook items after
+reload. An unsupported postal-change selection returned **contradicted** in
+3.6 seconds and did not invent a rationale supporting that hypothesis.
+
+Export produced a parsed version-1 notebook with head D03, three Deltas,
+five events, eleven evidence items and contested D02. The browser automation's
+download-event wait timed out, but the actual downloaded file was inspected.
+Cancelling hosted reset preserved the notebook; explicit local reset restored
+the six starter clues and empty history after reload.
+
 These are behavior/provenance checks, not independent certification of every
-claim. Responsive inspection found inherited full-width checkbox styles
-causing horizontal overflow; a scoped fixed-width correction was added.
+claim. The previous application releases remain available for rollback.
