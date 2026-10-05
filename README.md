@@ -1,5 +1,10 @@
 # Trama × Sanity
 
+**This branch is a post-submission Orbit UI preview.** The submitted demo and
+writeups remain on `main`; this preview starts with an investigation question
+and an explicit **Ask Sanity for Clues** step, with the builder and full-text
+readers inside the triangle. [Preview walkthrough](docs/demo/orbit-ui-preview.md).
+
 ![Successive Deltas connect hypothesis, evidence and rationale](docs/demo/images/trama-delta-flow-cover-v1.png)
 
 Conceptual cover art, not a screenshot of the current interface.
