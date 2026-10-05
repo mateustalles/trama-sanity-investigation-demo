@@ -8,6 +8,10 @@ describe("investigation MVP boundary", () => {
     expect(demoRouteAllowed("/poc/sanity/game", "GET")).toBe(true);
     expect(demoRouteAllowed("/poc/sanity/game", "HEAD")).toBe(true);
     expect(demoRouteAllowed("/api/poc/sanity/investigate", "POST")).toBe(true);
+    expect(demoRouteAllowed("/api/poc/sanity/game/search", "POST")).toBe(true);
+    expect(demoRouteAllowed("/api/poc/sanity/game/review", "POST")).toBe(true);
+    expect(demoRouteAllowed("/api/poc/sanity/game/review", "GET")).toBe(false);
+    expect(demoRouteAllowed("/api/poc/sanity/game/other", "POST")).toBe(false);
     expect(demoRouteAllowed("/login", "POST")).toBe(true);
   });
   it("does not expose the operational product or write endpoints", () => {

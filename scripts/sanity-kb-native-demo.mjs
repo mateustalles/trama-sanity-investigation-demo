@@ -64,12 +64,12 @@ export function createNativeKnowledgeBaseDemoAdapters({mcpEndpoint,organizationT
   }
   const kb = createKnowledgeBaseReader({mcpEndpoint,knowledgeBaseId,organizationToken,fetchImpl})
   return {searchKnowledgeBase:kb.searchKnowledgeBase,
-    generateJson:async ({stage,system,user,maxOutputTokens}) => {
+    generateJson:async ({stage,system,user,maxOutputTokens,format}) => {
       const started = performance.now()
       const response = await fetchImpl('https://api.openai.com/v1/responses',{
         method:'POST',headers:{Authorization:`Bearer ${openAiKey}`,'Content-Type':'application/json'},
         body:JSON.stringify({model,input:[{role:'system',content:system},{role:'user',content:user}],
-          reasoning:{effort:'low'},max_output_tokens:maxOutputTokens,store:false,text:{format:{type:'json_object'}}}),
+          reasoning:{effort:'low'},max_output_tokens:maxOutputTokens,store:false,text:{format:format ?? {type:'json_object'}}}),
         signal:AbortSignal.timeout(90_000),cache:'no-store',
       })
       const payload = await response.json()

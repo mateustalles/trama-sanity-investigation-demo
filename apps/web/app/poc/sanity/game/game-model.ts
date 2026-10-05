@@ -1,6 +1,7 @@
 export type Evidence = {
   id: string; title: string; text: string; provenance: string;
   kind: 'frozen-source' | 'generated-context';
+  receipt?: string;
 };
 export type Delta = {
   id: string; parentId: string | null; question: string; hypothesis: string;
@@ -82,6 +83,23 @@ export function addGeneratedEvidence(state: GameState, title: string, text: stri
     provenance: `Live native Knowledge Base search. Question: ${query.slice(0, 600)}. Generated interpretation, not verified original evidence.`, kind: 'generated-context'}]};
 }
 
+/** Merge authenticated live presentation clues without changing any accepted Delta. */
+export function mergeGameClues(state: GameState, clues: Evidence[]): GameState {
+  const evidence = [...state.evidence];
+  for (const clue of clues) {
+    if (clue.kind !== 'generated-context' || !clue.text.trim() || clue.text.length > 100000 || !clue.receipt) throw new Error('Invalid retrieved clue.');
+    const index = evidence.findIndex(item => item.id === clue.id);
+    if (index < 0) evidence.push({...clue});
+    else {
+      const existing = evidence[index]!;
+      if (existing.kind !== clue.kind || existing.text !== clue.text || existing.title !== clue.title || existing.provenance !== clue.provenance) throw new Error('A clue identity cannot replace an earlier record.');
+      evidence[index] = {...clue}; // renew its receipt, not the evidence body
+    }
+  }
+  if (evidence.length > 60) throw new Error('Your notebook is full. Export it before starting a new investigation.');
+  return {...state, evidence};
+}
+
 export function restoreGame(value: unknown): GameState | null {
   try {
     if (!value || typeof value !== 'object') return null;
@@ -91,7 +109,8 @@ export function restoreGame(value: unknown): GameState | null {
       || !(state.headId === null || typeof state.headId === 'string')) return null;
     const strings = (...items: unknown[]) => items.every(item => typeof item === 'string');
     if (state.evidence.some(item => !item || !strings(item.id, item.title, item.text, item.provenance)
-      || item.text.length > 100000 || !['frozen-source', 'generated-context'].includes(item.kind))) return null;
+      || item.text.length > 100000 || !['frozen-source', 'generated-context'].includes(item.kind)
+      || item.receipt !== undefined && (typeof item.receipt !== 'string' || item.receipt.length > 100))) return null;
     if (new Set(state.evidence.map(item => item.id)).size !== state.evidence.length) return null;
     const ids = new Set<string>();
     for (const [index, delta] of state.deltas.entries()) {

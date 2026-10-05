@@ -53,15 +53,15 @@ hypothesis, choose evidence, explain your reasoning and preserve each decision
 as a step you can later challenge or branch from. Its triangle connects
 hypothesis, evidence and rationale; it does not score whether you found the truth.
 
-The game stores its notebook in your browser, not in real Trama State. Six
-frozen synthetic source excerpts provide a starting point; optional live
-Sanity retrieval adds clearly labeled generated context. The protected game
-page is deployed; its branch, reload and export interactions were checked in a
-local production build. [Game walkthrough and limits](docs/demo/game.md).
+Choose A/B/C around the hypothesis orb, select clues around the evidence orb,
+and ask the model to propose a rationale using only your selected material.
+Prewritten questions retrieve new clues from Sanity without first generating
+an answer. You decide what to accept and can later return, contest or branch.
 
-Guided question cards, individually selectable live KB entries, and AI review
-of a player's Delta are [proposed next steps](docs/demo/guided-delta-game-plan.md),
-not features of the deployed game yet.
+Six frozen source excerpts provide a starting point; native KB Search adds
+clearly labeled generated response sections, not verified originals. The
+notebook stays in your browser, not in real Trama State.
+[Game walkthrough and limits](docs/demo/game.md).
 
 ## How do we know it works?
 

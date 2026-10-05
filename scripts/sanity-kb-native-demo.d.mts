@@ -26,7 +26,7 @@ export interface NativeDemoResult {
 
 export interface NativeDemoAdapters {
   searchKnowledgeBase(input: {knowledgeBase: string; query: string; return: 'entries'; limit: number}): Promise<NativeDemoResult['search']>
-  generateJson(input: {stage: string; system: string; user: string; maxOutputTokens: number}): Promise<{
+  generateJson(input: {stage: string; system: string; user: string; maxOutputTokens: number;format?:Record<string,unknown>}): Promise<{
     model: string
     text: string
     usage: {inputTokens: number; outputTokens: number} | null

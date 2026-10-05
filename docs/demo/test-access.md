@@ -15,11 +15,11 @@ No personal API key is required. The account grants access to the demo, not pers
 
 - Six accepted questions per minute.
 - 600 accepted requests total for this shared account, not 600 per visitor.
-- The Investigator and the game's optional live search share this allowance; reading the six starting game records and accepting local Deltas do not make paid requests.
+- The Investigator, game clue retrieval and game AI review share this allowance. Each live action counts once; reading, selecting clues and accepting local Deltas are free.
 - The total allowance does not renew. Other visitors can consume the remaining budget.
 - Access expires at **2026-10-24 02:59:59 UTC** (October 23, 23:59:59 in São Paulo).
 
-The Investigator displays remaining allowance and a countdown after a minute-rate limit. Sanity search and answer generation have separate 30- and 90-second deadlines. A provider timeout is not a quota error; accepted attempts count even if a provider fails. There is no automatic paid retry. The game's existing search UI has simpler error feedback and has not yet received the Investigator's full countdown interface.
+Both demos display remaining allowance and a countdown after a minute-rate limit. Sanity search and model generation have separate 30- and 90-second deadlines. A provider timeout is not a quota error; accepted attempts count even if a provider fails. There is no automatic paid retry.
 
 ## First walkthrough
 
@@ -31,6 +31,6 @@ The Investigator displays remaining allowance and a countdown after a minute-rat
 
 Each question is independent. Suggested questions use predefined search terms; custom questions are sent unchanged. Results are generated Knowledge Base entries, not independently verified original documents. The live route does not persist or apply operational Deltas.
 
-For the current game's hypothesis, selection and branch controls, read [the game walkthrough](game.md). Guided question cards and model-based Delta review are proposed in [the next-step plan](guided-delta-game-plan.md), not implemented features.
+For the game's predefined questions, hypothesis alternatives, clue selection, AI rationale and branch controls, read [the game walkthrough](game.md).
 
 Please do not enter personal or confidential information. Live questions are sent to Sanity and OpenAI.

@@ -1,10 +1,24 @@
 import {describe, expect, it} from 'vitest';
-import {acceptDelta, activePath, addGeneratedEvidence, canUseAnchor, contestDelta, createGame, draftIssues, resetLocalNotebook, restoreGame, revertTo} from '../../../../apps/web/app/poc/sanity/game/game-model';
+import {acceptDelta, activePath, addGeneratedEvidence, mergeGameClues, canUseAnchor, contestDelta, createGame, draftIssues, resetLocalNotebook, restoreGame, revertTo} from '../../../../apps/web/app/poc/sanity/game/game-model';
 import {initialEvidence} from '../../../../apps/web/app/poc/sanity/game/game-evidence';
 
 const draft = {question: 'What caused checkout failures?', hypothesis: 'The timeout interacted with latency.', evidenceIds: ['01-deployment-record.md'], rationale: 'The release shortened the timeout.', conclusion: 'Investigate the interaction; cause remains uncertain.', closesCase: false};
 
 describe('browser-local Delta investigation', () => {
+  it('merges and renews receipts without replacing clues or changing history', () => {
+    const state=acceptDelta(createGame(initialEvidence),draft);
+    const clue={id:'KB-authenticated',title:'Retrieved clue',text:'Full generated text',kind:'generated-context' as const,provenance:'Not original',receipt:'first'};
+    const added=mergeGameClues(state,[clue]);
+    const renewed=mergeGameClues(added,[{...clue,receipt:'second'}]);
+    expect(renewed.evidence).toHaveLength(7);
+    expect(renewed.deltas).toEqual(state.deltas);
+    expect(renewed.events).toEqual(state.events);
+    expect(renewed.evidence.at(-1)?.receipt).toBe('second');
+    expect(added.evidence.at(-1)?.receipt).toBe('first');
+    expect(()=>mergeGameClues(added,[{...clue,text:'replacement'}])).toThrow();
+    expect(restoreGame(JSON.parse(JSON.stringify(renewed)))).toEqual(renewed);
+    expect(restoreGame({...renewed,evidence:[{...clue,receipt:42}]})).toBeNull();
+  });
   it('preserves the entire notebook until reset is explicitly confirmed', () => {
     const original = addGeneratedEvidence(acceptDelta(createGame(initialEvidence), draft), 'Another clue', 'Generated context', 'What changed?');
     const snapshot = JSON.stringify(original);
