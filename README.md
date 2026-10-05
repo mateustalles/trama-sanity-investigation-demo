@@ -4,6 +4,18 @@
 
 Conceptual cover art, not a screenshot of the current interface.
 
+## Two demos, one investigation
+
+- **Path One — Trama Investigator:** ask questions and inspect the Sanity
+  Knowledge Base context behind the agent's answers.
+  [Try the Investigator](https://trama.beautyqueenz.com/poc/sanity/investigate).
+- **Path Two — Delta game:** choose an explanation, connect clues and build a
+  history of decisions you can revisit or branch from.
+  [Play Delta](https://trama.beautyqueenz.com/poc/sanity/game).
+
+Both explore the same fictional incident. The Investigator helps you ask what
+happened; the game puts you in charge of what to conclude and why.
+
 ## Find the evidence. Test the story.
 
 A release goes live. Checkout payments start failing. Was the deployment
@@ -46,7 +58,7 @@ and access to the pilot archive; cloning alone does not grant that access.
 
 [Read the published Path One submission](https://dev.to/mateustalles/trama-investigating-uncertainty-with-sanity-context-2a9j).
 
-## Build your own investigation
+## Path Two: build your own investigation
 
 [Open the Delta game](https://trama.beautyqueenz.com/poc/sanity/game). Build a
 hypothesis, choose evidence, explain your reasoning and preserve each decision
@@ -61,6 +73,28 @@ an answer. You decide what to accept and can later return, contest or branch.
 Six frozen source excerpts provide a starting point; native KB Search adds
 clearly labeled generated response sections, not verified originals. The
 notebook stays in your browser, not in real Trama State.
+
+### How to play Delta
+
+1. **Choose an explanation.** Did a shorter timeout interact with provider
+   latency, did postal-code validation reject payments, or did fraud rules change?
+2. **Gather clues.** Read the starting records and choose a prewritten question
+   to retrieve additional context from Sanity. Select the material you want to
+   connect, including anything that challenges your explanation.
+3. **Ask for a rationale.** The model reviews only your selected clues and
+   proposes a connection, limitations and a next check. You can adopt or reject
+   the proposal; it cannot accept a decision for you.
+4. **Accept your Delta.** Choose how strongly to conclude. Your accepted
+   hypothesis, evidence and rationale become a smaller triangle on the left;
+   a new draft opens in the center.
+5. **Change your mind without erasing history.** Return to an earlier Delta
+   to create another branch, or contest a step when new evidence challenges it.
+   A player-concluded branch can reopen through another Delta.
+
+There is no correctness percentage or automatic win. The challenge is to build
+an explanation you can defend while making its uncertainty visible. Progress
+is saved locally in your browser and can be exported as a notebook.
+
 [Game walkthrough and limits](docs/demo/game.md) ·
 [Game source](apps/web/app/poc/sanity/game) ·
 [Path Two submission template](docs/experiments/sanity-challenge-game-submission.md).
