@@ -123,3 +123,11 @@ Offline tests cover the exact 160-job matrix, fixed queries, local-only retrieva
 unchanged full MCP text, no-fallback errors, shared State, explicit execution
 failures and full-message token counting. Live results are an experiment, not
 a deterministic unit-test guarantee.
+
+## Planned follow-up: same words, different incident
+
+The [hard-negative benchmark plan](kb-keyword-distractor-benchmark-plan.md)
+adds realistic records sharing query vocabulary but describing other events,
+scopes or evidentiary roles. It compares changes from 145 to 175 synthetic
+records in isolated experimental KBs, with the same queries and both models.
+It is not yet executed and does not alter the results above or the active demo.
