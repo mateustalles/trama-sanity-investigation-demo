@@ -98,3 +98,22 @@ evidence-support assessment, not a root-cause oracle or audited win condition.
 
 See [implementation decisions](guided-delta-game-plan.md) and the
 [Path Two writeup draft](../experiments/sanity-challenge-game-writeup.md).
+
+## Validation record · October 5, 2026 UTC
+
+277 offline tests passed (193 Vitest / 84 script tests), workspace typecheck
+and Windows/Linux production builds passed. In a local production browser,
+D01 → concluded D02 → return D01 → sibling D03 → contest D02 retained all
+three Deltas and restored active D03 with five events after reload.
+
+Hosted R6 (`9ed6f1a`) retrieved five complete generated sections through the
+game browser. A separate OpenAI review of three selected records—including a
+live authenticated KB section—returned a supported proposal in 5.3 seconds,
+with causal limits and only selected references. The draft rationale remained
+empty until explicitly adopted. The player then accepted D01 and opened D02.
+Anonymous game access redirected (307), unsigned review returned 401 and an
+operational write returned 403. No dataset, KB or operational State changed.
+
+These are behavior/provenance checks, not independent certification of every
+claim. Responsive inspection found inherited full-width checkbox styles
+causing horizontal overflow; a scoped fixed-width correction was added.
