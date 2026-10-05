@@ -42,8 +42,10 @@ fails; do not reset Supabase or rebuild the KB as a deployment recovery step.
 Supply the Sanity organization token, Context MCP endpoint and OpenAI key only
 through the protected server environment. Public Sanity identifiers and public
 Supabase keys are distinct from server secrets. Do not publish environment
-files, SSH private keys, Auth recovery links or judge passwords in GitHub,
-the writeup or a recording.
+files, SSH private keys, Auth recovery links or owner passwords in GitHub,
+the writeup or a recording. Only the explicitly approved restricted demo login
+is intentionally public; see [test access](test-access.md). Public access does
+not weaken the server-owned role, expiry or shared quota.
 
 Production enables `TRAMA_HOSTED_TENANCY_READY=true` and
 `TRAMA_DEMO_REQUIRE_JUDGE=true`. The server-owned `TRAMA_DEMO_OPERATOR_ID` admits
@@ -68,7 +70,9 @@ and verified password-based authentication without changing owner credentials,
 judge metadata, or expiry. The incremental quota migration preserved real
 usage; rolled-back database checks verified six allowed requests, a blocked
 seventh request, minute renewal, and the 600-request total limit. Credentials
-are handed over privately, never committed here.
+were initially handed over privately. The author subsequently approved
+publishing that dedicated restricted login in the DEV post and this repository;
+all provider, administrator and owner credentials remain private.
 
 The R5 release (`3a0fbca`) adds the four-step investigation guide, optional
 context/trace panels, remaining allowance, precise retry countdowns, and

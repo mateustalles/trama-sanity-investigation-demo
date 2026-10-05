@@ -4,6 +4,12 @@ The first submission is the read-only investigation agent and its Path One
 post. The player-led State and Delta game is a separate second submission.
 Do not delay the agent submission to add game mechanics.
 
+Path One was published on October 5, 2026 at 01:40:55 UTC:
+[Trama: Investigating Uncertainty with Sanity Context](https://dev.to/mateustalles/trama-investigating-uncertainty-with-sanity-context-2a9j).
+The [article mirror](../experiments/sanity-challenge-writeup.md) reflects that
+published version; the longer pre-publication experiment draft is preserved
+as [research notes](../experiments/sanity-challenge-research-notes.md).
+
 The restricted hosted app is verified and supplies the Path One demo link.
 A short recorded walkthrough is recommended, not a reason to delay this post:
 the template accepts a deployed URL or video. Explain the case, retrieval
@@ -11,7 +17,7 @@ trace and limitations in either presentation.
 
 ## Required publication assets
 
-- [ ] Review `docs/experiments/sanity-challenge-writeup.md` as the Path One post.
+- [x] Review and publish `docs/experiments/sanity-challenge-writeup.md` as the Path One post.
 - [x] Include a verified live demo link **or** an embedded recorded walkthrough,
   as allowed by the Path One template. A localhost address is not a public demo.
   Live URL: https://trama.beautyqueenz.com/poc/sanity/investigate.
@@ -24,8 +30,9 @@ trace and limitations in either presentation.
   account through a temporary session, then sign that session out.
 - [x] Create a unique password for the existing restricted judge and verify
   password-based sign-in in the hosted browser. Owner access remains unchanged.
-- [ ] Deliver judge credentials privately or include sufficient testing
-  instructions in the submission. The rules do not require a public password.
+- [x] Include testing instructions and the explicitly approved restricted
+  demo credentials in the submission; mirror access in [test access](test-access.md).
+  The rules do not require a public password; this publication was the author's choice.
 - [x] Remove all publication placeholders before posting with `sanitychallenge`.
 - [ ] Optionally add a curated, redacted public agent-session link. This is
   encouraged, not mandatory. Never share the entire private research chat blindly.
@@ -57,7 +64,7 @@ authentication links out of the recording.
 ## Final local checks
 
 - [x] Offline tests and typecheck pass with a dedicated monitor: the current
-  current friendly-demo integration has 260 tests on October 4 (184 application
+  friendly-demo integration has 260 tests on October 4 (184 application
   and 76 Node script tests), after the prior 243-test release.
 - [x] Production builds pass locally on Windows and on the Linux VPS.
 - [x] A live native KB question succeeds with the reviewed configuration:

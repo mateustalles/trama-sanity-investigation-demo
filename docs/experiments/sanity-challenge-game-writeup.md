@@ -18,7 +18,7 @@ The board is deliberately not a root-cause oracle. Its feedback checks whether y
 
 ## Demo
 
-[Open the Delta game](https://trama.beautyqueenz.com/poc/sanity/game). It shares the protected application with the separate [read-only investigation agent](https://trama.beautyqueenz.com/poc/sanity/investigate). Contact me through DEV to arrange restricted review access privately; password handoff is being finalized. No provider key is needed in the browser.
+[Open the Delta game](https://trama.beautyqueenz.com/poc/sanity/game). It shares the restricted application with the separate [read-only investigation agent](https://trama.beautyqueenz.com/poc/sanity/investigate). Use the [dedicated test credentials](https://github.com/mateustalles/trama-sanity-investigation-demo/blob/main/docs/demo/test-access.md), intentionally published with my approval. The shared account allows six questions per minute and 600 accepted requests total across all visitors. No personal provider key is needed in the browser.
 
 ![A preserved D03 triangle beside the new D04 draft, with hypothesis, evidence and rationale orbs](https://raw.githubusercontent.com/mateustalles/trama-sanity-investigation-demo/main/docs/demo/images/delta-progression.jpg)
 
@@ -28,7 +28,7 @@ Local production-build capture: an accepted Delta becomes the smaller triangle a
 
 Local production-build capture: the earlier branch remains visible after it is contested; D03 stays active.
 
-The walkthrough will show one accepted Delta becoming the past, a new draft being built, a live Sanity question contributing context and an alternative branch preserving the old explanation. [The game guide](https://github.com/mateustalles/trama-sanity-investigation-demo/blob/main/docs/demo/game.md) describes the controls and limits. Approved test access is required for live provider calls; credentials and API keys are not part of the post.
+The walkthrough will show one accepted Delta becoming the past, a new draft being built, a live Sanity question contributing context and an alternative branch preserving the old explanation. [The game guide](https://github.com/mateustalles/trama-sanity-investigation-demo/blob/main/docs/demo/game.md) describes the controls and limits. Restricted test access is required for live provider calls; all provider and owner keys remain private.
 
 ## Code
 
@@ -66,7 +66,7 @@ The six starting excerpts were compared paragraph by paragraph with the frozen c
 
 The Linux production build passed too. The hosted game returned HTTP 200 for the restricted judge and redirected an anonymous visitor. Game POST and unrelated operational API requests were denied with 403. The shared native investigation API returned 200 with the full 14,093-character response and an OpenAI answer. This was an HTTP check, not a browser interaction with the game's live-context controls.
 
-The optional live request has not yet been exercised through the game browser. The reset confirmation could not be exercised by automation, so it is not claimed as an end-to-end pass. Password-form testing and private credential handoff also remain pending. The first-delivery benchmark and agent smoke do not substitute for them.
+The optional live request has not yet been exercised through the game browser. The reset confirmation could not be exercised by automation, so it is not claimed as an end-to-end pass. The shared hosted password login was subsequently verified through the Investigator, and restricted test credentials are now intentionally public. That agent smoke does not substitute for the remaining game-specific browser checks.
 
 ## Sanity Project Details
 
@@ -81,4 +81,4 @@ The optional live request has not yet been exercised through the game browser. T
 
 The project was developed interactively with Codex. No curated public transcript is included yet; the private session contains operational setup and must be reviewed before sharing. The design corrections above summarize the relevant decisions without claiming to be a verbatim transcript.
 
-<!-- Path Two publication gate: review the final post; confirm included local screenshots are accessible in the public repository; privately arrange restricted review access and finish credential handoff. Keep Path One as its own post. Do not publish provider keys, passwords or recovery links. -->
+<!-- Path Two publication gate: review the final post; verify the game-specific hosted controls; confirm included screenshots are accessible. Keep Path One as its own post. Only the author-approved restricted demo login is public; never publish provider keys, owner passwords or recovery links. Guided question cards and AI review are proposed, not implemented. -->

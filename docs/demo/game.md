@@ -6,6 +6,12 @@ hosted restricted-judge HTTP page were checked separately. Password-based
 browser sign-in and optional live retrieval through the game browser remain
 untested; do not treat the separate [agent](README.md) smoke as those checks.
 
+The shared hosted login was subsequently verified through the Investigator.
+The intentionally public restricted login is in [test access](test-access.md).
+This does not certify the game's live-context or reset controls end-to-end.
+The [guided-game proposal](guided-delta-game-plan.md) adds question cards and
+model review as future work, not currently deployed behavior.
+
 ## Your challenge
 
 Payments failed during a fifteen-minute checkout incident. A release happened
@@ -130,9 +136,10 @@ with the explicit inline confirmation above; the final offline regression
 passed 243 tests (168 Vitest and 75 Node tests), typecheck and build, including
 a reset guard that preserves the original notebook until confirmation. The
 new inline controls have not yet been verified end-to-end in that browser.
-Password-form testing and private credential
-handoff also remain pending. The separate agent's live results do not
-substitute for those checks.
+The shared password login and credential handoff were subsequently completed
+through the agent, and the dedicated login is intentionally public with the
+author's approval. The separate agent's live results do not substitute for
+the remaining game-specific browser checks.
 
 The final R4 application release uses commit `2740343`, preserving R3 for
 rollback. Its Linux build passed and a new restricted-session route check

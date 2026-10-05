@@ -8,7 +8,8 @@ this is a recorded pilot count, not a live count displayed by the application.
 [Open the hosted demo](https://trama.beautyqueenz.com/poc/sanity/investigate).
 Sign in using approved test access. The paid investigation endpoint accepts
 only the restricted judge role or the server-designated demo operator, not
-arbitrary Supabase accounts. Passwords are not published in this repository.
+arbitrary Supabase accounts. The author-approved [restricted test credentials](test-access.md)
+are intentionally public; provider keys and owner credentials are never published.
 
 ## The case
 
@@ -127,7 +128,7 @@ not browser-selectable roles. See [VPS hosting](vps-hosting.md) for the current
 production arrangement and verification boundaries.
 
 The restricted judge role uses server-owned `trama_access=sanity_demo_judge`
-metadata, expires after 14 days, and permits only authentication and demo
+metadata and an explicit server-owned expiry, and permits only authentication and demo
 routes. Application guards and database membership checks deny operational
 Workspace access. A persistent atomic quota permits 600 questions total and
 six per minute. Missing quota configuration fails closed. The incremental
@@ -152,8 +153,10 @@ The create command applies the judge-access migration, creates a restricted
 Auth account, and saves a private password-setup link under ignored
 `.trama/runtime/sanity-demo-judge-setup.json`. It refuses existing accounts and
 never prints a password or token. It does not send an invitation email. Open
-the private setup link and choose a password; share credentials privately,
-not in the write-up. The script applies SQL directly, so reconcile Supabase
+the private setup link and choose a password; keep newly provisioned credentials
+private unless the owner explicitly approves a dedicated public test account.
+The current deliberately public account is documented in [test access](test-access.md).
+Never publish setup links or provider keys. The script applies SQL directly, so reconcile Supabase
 migration history before a later CLI migration push.
 
 Before sharing, test the signed-in flow, denied personal routes, quotas, and
