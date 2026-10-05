@@ -70,6 +70,15 @@ usage; rolled-back database checks verified six allowed requests, a blocked
 seventh request, minute renewal, and the 600-request total limit. Credentials
 are handed over privately, never committed here.
 
+The R5 release (`3a0fbca`) adds the four-step investigation guide, optional
+context/trace panels, remaining allowance, precise retry countdowns, and
+separate search/model timeout messages. Windows and Linux builds and 260
+offline tests passed. Hosted password sign-in and a live browser question
+were verified (4.4 seconds); the previous R4 release remains available for
+rollback. The restricted judge expiry was extended to October 23, 23:59
+São Paulo to cover review after the October 22 winner announcement, without
+changing its role, 600-question quota, or owner access.
+
 The app is read-only with respect to Trama State and personal organizer data,
 but a successful question still spends Sanity and OpenAI quota. Before filming
 or sharing access, review usage, inspect the answer and keep the complete

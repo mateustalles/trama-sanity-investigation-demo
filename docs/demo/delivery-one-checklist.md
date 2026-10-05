@@ -62,8 +62,11 @@ authentication links out of the recording.
 - [x] Production builds pass locally on Windows and on the Linux VPS.
 - [x] A live native KB question succeeds with the reviewed configuration:
   complete 14,093-character context, 3,916 input and 295 output tokens.
-- [ ] English brief, prompts, loading state, errors, context labels and controls
+- [x] English brief, prompts, loading state, context labels and controls
   render correctly. Generated context is never labeled a verified original.
+  The R5 hosted browser walkthrough returned a live answer in 4.4 seconds;
+  context and technical trace start collapsed. Error/countdown paths are tested
+  deterministically, not by inducing paid provider failures.
 - [x] No hidden keyword fallback, host reranking or character truncation.
 - [x] Authentication and quota guards remain in place; secrets stay server-side.
   Six questions per minute and 600 total are enforced; migration preserves usage.

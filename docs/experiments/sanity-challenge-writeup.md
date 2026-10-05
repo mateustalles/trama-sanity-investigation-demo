@@ -18,11 +18,11 @@ Sanity plays the librarian. Its Knowledge Base organizes an archive of synthetic
 
 [Open the live investigation](https://trama.beautyqueenz.com/poc/sanity/investigate).
 
-![The case brief introduces a fictional checkout incident without revealing its cause](https://raw.githubusercontent.com/mateustalles/trama-sanity-investigation-demo/main/docs/demo/images/investigation-brief.jpg)
+![A live hosted answer separates the reported checkout change from an unproven causal explanation](https://raw.githubusercontent.com/mateustalles/trama-sanity-investigation-demo/main/docs/demo/images/investigation-live-r5.png)
 
-Local production-build capture of the brief, not a recorded model answer.
+Actual hosted demo response on October 4, 2026. The returned context and technical trace are available on demand rather than filling the initial screen.
 
-Sign-in is required to protect the paid model endpoint. Contact me through DEV to arrange restricted test credentials privately. Ordinary accounts do not grant access to the demo. The dedicated account permits 600 questions total and six per minute. Rate-limit feedback explains when another question is allowed; a processing timeout is reported separately. A live demo URL is provided above; no recorded walkthrough is required to try it.
+Sign-in is required to protect the paid model endpoint. Contact me through DEV to arrange restricted test credentials privately. Ordinary accounts do not grant access to the demo. The dedicated account permits 600 questions total and six per minute, with access through October 23, 2026. Rate-limit feedback explains when another question is allowed; a processing timeout is reported separately. A live demo URL is provided above; no recorded walkthrough is required to try it.
 
 Start with the case brief, then try:
 
