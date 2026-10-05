@@ -129,8 +129,17 @@ production arrangement and verification boundaries.
 The restricted judge role uses server-owned `trama_access=sanity_demo_judge`
 metadata, expires after 14 days, and permits only authentication and demo
 routes. Application guards and database membership checks deny operational
-Workspace access. A persistent atomic quota permits 60 questions total and
-six per ten minutes. Missing quota configuration fails closed.
+Workspace access. A persistent atomic quota permits 600 questions total and
+six per minute. Missing quota configuration fails closed. The incremental
+`202610040001_demo_judge_quota.sql` migration changes the allowance without
+resetting usage or weakening role, expiry, or Workspace restrictions.
+
+The interface states these limits before a question. Rate-limit responses
+include `Retry-After`, an absolute retry time and a countdown; total exhaustion
+does not claim to renew. Sanity search has a 30-second deadline, and answer
+generation has a separate 90-second deadline. A processing timeout is not a
+quota error. Accepted attempts count toward the allowance even if a provider
+fails; the app never retries a paid question automatically.
 
 Administrators can inspect and provision a **new** dedicated account:
 

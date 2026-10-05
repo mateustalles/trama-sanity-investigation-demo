@@ -26,7 +26,8 @@ if(mode==='plan') {
   const sql = postgres(env.SUPABASE_DATABASE_URL,{max:1,ssl:'require'})
   try {
     const migration = await readFile(new URL('../supabase/migrations/202609290001_sanity_demo_judge_access.sql',import.meta.url),'utf8')
-    await sql.begin(async tx => {await tx.unsafe(migration)})
+    const quotaMigration = await readFile(new URL('../supabase/migrations/202610040001_demo_judge_quota.sql',import.meta.url),'utf8')
+    await sql.begin(async tx => {await tx.unsafe(migration); await tx.unsafe(quotaMigration)})
   } finally {await sql.end()}
   const expiresAt = new Date(Date.now()+14*24*60*60*1000).toISOString()
   const {data,error} = await admin.auth.admin.createUser({email,email_confirm:true,password:randomBytes(32).toString('base64url'),

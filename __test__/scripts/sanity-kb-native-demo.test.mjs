@@ -98,6 +98,16 @@ test('server adapters bind the KB and keep API keys outside the model request bo
   assert.doesNotMatch(JSON.stringify(requests[1].body),/sanity-secret|openai-secret/)
 })
 
+test('timeouts preserve the stage and cause without triggering a fallback',async()=>{
+  const timeout=new DOMException('Deadline exceeded','TimeoutError')
+  const search=fixture({searchError:timeout})
+  await assert.rejects(investigateNativeKnowledgeBaseQuestion(question,search.adapters),error=>error.stage==='search'&&error.cause===timeout)
+  assert.deepEqual(search.calls.map(item=>item.stage),['search'])
+  const model=fixture()
+  model.adapters.generateJson=async()=>{throw timeout}
+  await assert.rejects(investigateNativeKnowledgeBaseQuestion(question,model.adapters),error=>error.stage==='model'&&error.cause===timeout)
+})
+
 test('public presentation labels KB prose as generated, not verified originals',()=>{
   const ui=readFileSync(new URL('../../apps/web/app/poc/sanity/investigate/investigation-demo.tsx',import.meta.url),'utf8')
   const route=readFileSync(new URL('../../apps/web/app/api/poc/sanity/investigate/route.ts',import.meta.url),'utf8')

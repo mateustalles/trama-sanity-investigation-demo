@@ -22,7 +22,7 @@ Sanity plays the librarian. Its Knowledge Base organizes an archive of synthetic
 
 Local production-build capture of the brief, not a recorded model answer.
 
-Sign-in is required to protect the paid model endpoint. Contact me through DEV to arrange restricted test credentials privately. Ordinary accounts do not grant access to the demo. The restricted-account HTTP flow has been checked, but the password handoff is still being finalized. A short recorded walkthrough is being prepared as an additional presentation of the same real flow.
+Sign-in is required to protect the paid model endpoint. Contact me through DEV to arrange restricted test credentials privately. Ordinary accounts do not grant access to the demo. The dedicated account permits 600 questions total and six per minute. Rate-limit feedback explains when another question is allowed; a processing timeout is reported separately. A live demo URL is provided above; no recorded walkthrough is required to try it.
 
 Start with the case brief, then try:
 

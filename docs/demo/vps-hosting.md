@@ -48,8 +48,8 @@ the writeup or a recording.
 Production enables `TRAMA_HOSTED_TENANCY_READY=true` and
 `TRAMA_DEMO_REQUIRE_JUDGE=true`. The server-owned `TRAMA_DEMO_OPERATOR_ID` admits
 the approved filming operator. The paid route otherwise requires the restricted
-judge role, preserving its expiry, 60-question total quota and six-question
-per-ten-minute quota. An ordinary signed-in account does not grant paid access.
+judge role, preserving its expiry, 600-question total quota and six-question
+per-minute quota. An ordinary signed-in account does not grant paid access.
 Keep the existing account rather than provisioning it again during a redeploy.
 
 ## Verified boundaries and remaining check
@@ -62,6 +62,13 @@ paid native API 200 and operational write API 403, then was signed out. It did
 not reset the password or change account metadata. Password-form testing and
 password-based browser sign-in remain separate checks; these responses do not
 certify that handoff or every quota edge.
+
+An October 4 follow-up assigned a unique password to the existing judge account
+and verified password-based authentication without changing owner credentials,
+judge metadata, or expiry. The incremental quota migration preserved real
+usage; rolled-back database checks verified six allowed requests, a blocked
+seventh request, minute renewal, and the 600-request total limit. Credentials
+are handed over privately, never committed here.
 
 The app is read-only with respect to Trama State and personal organizer data,
 but a successful question still spends Sanity and OpenAI quota. Before filming

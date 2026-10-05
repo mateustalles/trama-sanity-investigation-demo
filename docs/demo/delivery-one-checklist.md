@@ -22,8 +22,10 @@ trace and limitations in either presentation.
   dataset and KB rather than implying public dataset access.
 - [x] Verify the hosted page and paid API with the existing restricted judge
   account through a temporary session, then sign that session out.
-- [ ] Complete the password form and deliver judge credentials privately;
-  temporary session testing does not verify a password-based sign-in.
+- [x] Create a unique password for the existing restricted judge and verify
+  password-based sign-in in the hosted browser. Owner access remains unchanged.
+- [ ] Deliver judge credentials privately or include sufficient testing
+  instructions in the submission. The rules do not require a public password.
 - [x] Remove all publication placeholders before posting with `sanitychallenge`.
 - [ ] Optionally add a curated, redacted public agent-session link. This is
   encouraged, not mandatory. Never share the entire private research chat blindly.
@@ -55,21 +57,22 @@ authentication links out of the recording.
 ## Final local checks
 
 - [x] Offline tests and typecheck pass with a dedicated monitor: the current
-  integration has 243 tests on October 4 (168 application and 75 Node script
-  tests), after the first-delivery validation of 233 tests.
+  current friendly-demo integration has 260 tests on October 4 (184 application
+  and 76 Node script tests), after the prior 243-test release.
 - [x] Production builds pass locally on Windows and on the Linux VPS.
 - [x] A live native KB question succeeds with the reviewed configuration:
   complete 14,093-character context, 3,916 input and 295 output tokens.
 - [ ] English brief, prompts, loading state, errors, context labels and controls
   render correctly. Generated context is never labeled a verified original.
-- [ ] No hidden keyword fallback, host reranking or character truncation.
-- [ ] Authentication and quota guards remain in place; secrets stay server-side.
+- [x] No hidden keyword fallback, host reranking or character truncation.
+- [x] Authentication and quota guards remain in place; secrets stay server-side.
+  Six questions per minute and 600 total are enforced; migration preserves usage.
 - [x] Public HTTPS boundary verified: login HTTP 200, anonymous investigation
   redirect 307, unsigned paid API 401, unrelated operational API 403.
 - [x] Signed-in restricted-judge HTTP walkthrough: page 200, paid native API
   200, operational write API 403. Curated query and full returned context checked.
-- [ ] Complete password setup and password-based browser sign-in; the checked
-  temporary session did not change the password or account metadata.
+- [x] Complete password setup and password-based browser sign-in. Only the
+  restricted judge password was changed; owner credentials were not modified.
 - [x] Original benchmark artifacts are unchanged; grader replay is separately
   versioned and linked to the source run.
 

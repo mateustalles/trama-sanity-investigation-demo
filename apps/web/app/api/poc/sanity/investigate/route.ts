@@ -4,21 +4,13 @@ import {hostedAuthConfigured} from '../../../../../lib/supabase/config'
 import {currentHostedUser} from '../../../../../lib/supabase/session'
 import {isDemoJudge, demoJudgeExpired, demoAccountAllowed} from '../../../../../lib/supabase/demo-judge'
 import {createSupabaseAdminClient} from '../../../../../lib/supabase/admin'
+import {demoLimits,consumeLocalAttempt,judgeUsageInfo,rateLimitFailure,investigationFailure} from '../../../../../lib/demo-request-policy'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-const windowMs = 10 * 60 * 1000
-const maxRequests = 6
 const attempts = new Map<string, number[]>()
-
-function limited(identity: string) {
-  const now = Date.now()
-  const recent = (attempts.get(identity) ?? []).filter(time => now - time < windowMs)
-  if (recent.length >= maxRequests) return true
-  attempts.set(identity, [...recent, now])
-  return false
-}
+const privateHeaders={'Cache-Control':'no-store'}
 
 export async function POST(request: Request) {
   const user = hostedAuthConfigured() ? await currentHostedUser() : null
@@ -40,8 +32,6 @@ export async function POST(request: Request) {
   } catch (error) {
     return Response.json({error:error instanceof Error ? error.message : 'Invalid request.'},{status:400})
   }
-  if (limited(user?.id ?? 'localhost')) return Response.json({error:'Demo rate limit reached. Please try again in a few minutes.'},{status:429})
-
   const organizationToken = process.env.SANITY_ORGANIZATION_TOKEN
   const openAiKey = process.env.OPENAI_API_KEY ?? process.env.OPEN_API_KEY
   const mcpEndpoint = process.env.SANITY_CONTEXT_EVIDENCE_MCP_URL
@@ -49,18 +39,37 @@ export async function POST(request: Request) {
     return Response.json({error:'The demo is not configured on this server yet.'},{status:503})
   }
   const requestId = randomUUID()
+  let access: Record<string,unknown> | undefined
   try {
     if (user && isDemoJudge(user)) {
       if (demoJudgeExpired(user)) return Response.json({error:'Judge access expired.'},{status:403})
-      const {data,error} = await createSupabaseAdminClient().rpc('consume_sanity_demo_judge_question',{candidate_user_id:user.id})
+      const admin=createSupabaseAdminClient()
+      const {data,error} = await admin.rpc('consume_sanity_demo_judge_question',{candidate_user_id:user.id})
       if (error) return Response.json({error:'Judge quota is not configured.'},{status:503})
-      if (data !== 'allowed') return Response.json({error:'Judge access or quota limit reached.'},{status:data === 'rate_limited' ? 429 : 403})
+      if (!['allowed','rate_limited'].includes(data)) return Response.json({error:'Judge access is unavailable or expired.',code:'access_denied'},{status:403,headers:privateHeaders})
+      const {data:usage,error:usageError}=await admin.from('sanity_demo_judge_usage')
+        .select('total_requests,window_requests,window_started_at').eq('user_id',user.id).single()
+      if (usageError || !usage) return Response.json({error:'Your allowance could not be checked. Please try again later.',code:'quota_unavailable'},{status:503,headers:privateHeaders})
+      access=judgeUsageInfo(usage)
+      if (data==='rate_limited') {
+        if (access.remainingTotal===0) return Response.json({error:'This demo account has used its 600-question allowance. It does not reset each minute; contact the demo owner for renewed access.',code:'quota_exhausted',limits:demoLimits,access},{status:403,headers:privateHeaders})
+        const failure=rateLimitFailure(access.retryAt as string)
+        return Response.json({...failure,access},{status:429,headers:{...privateHeaders,'Retry-After':String(failure.retryAfterSeconds)}})
+      }
+    } else {
+      const attempt=consumeLocalAttempt(attempts,user?.id ?? 'localhost')
+      if (!attempt.allowed) {
+        const failure=rateLimitFailure(attempt.retryAt)
+        return Response.json(failure,{status:429,headers:{...privateHeaders,'Retry-After':String(failure.retryAfterSeconds)}})
+      }
+      access=attempt.access
     }
     const adapters = createNativeKnowledgeBaseDemoAdapters({mcpEndpoint,organizationToken,openAiKey})
     const result = await investigateNativeKnowledgeBaseQuestion(question,adapters)
-    return Response.json({...result,requestId},{headers:{'Cache-Control':'no-store'}})
+    return Response.json({...result,requestId,access},{headers:privateHeaders})
   } catch (error) {
-    console.error(`Sanity pilot demo ${requestId}:`,error instanceof Error ? error.message : String(error))
-    return Response.json({error:'The investigation could not be completed. No unsupported answer was shown.',requestId},{status:502,headers:{'Cache-Control':'no-store'}})
+    const failure=investigationFailure(error)
+    console.error(`Sanity pilot demo ${requestId}: ${failure.code}`)
+    return Response.json({error:failure.error,code:failure.code,requestId,access},{status:failure.status,headers:privateHeaders})
   }
 }

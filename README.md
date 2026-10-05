@@ -35,9 +35,9 @@ decision.
 [Walkthrough and submission checklist](docs/demo/delivery-one-checklist.md)
 
 The hosted demo requires approved test access; ordinary accounts cannot use
-the paid endpoint. Contact the author to arrange restricted credentials privately;
-the password handoff is still being finalized. A recorded walkthrough is also
-being prepared. Running your own instance requires authorized server-side credentials
+the paid endpoint. Contact the author to arrange restricted credentials privately.
+The test account permits 600 questions total and six per minute. Running your
+own instance requires authorized server-side credentials
 and access to the pilot archive; cloning alone does not grant that access.
 
 ## Build your own investigation
